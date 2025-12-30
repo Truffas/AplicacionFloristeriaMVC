@@ -19,8 +19,10 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="542a" binding="JPanelLibro" layout-manager="FormLayout">
+          <grid id="542a" binding="JPanelPedido" layout-manager="FormLayout">
             <rowspec value="center:d:noGrow"/>
+            <rowspec value="top:4dlu:noGrow"/>
+            <rowspec value="center:max(d;4px):noGrow"/>
             <rowspec value="top:4dlu:noGrow"/>
             <rowspec value="center:max(d;4px):noGrow"/>
             <rowspec value="top:4dlu:noGrow"/>
@@ -45,7 +47,7 @@
             <colspec value="left:4dlu:noGrow"/>
             <colspec value="fill:539px:grow"/>
             <constraints>
-              <tabbedpane title="Libro"/>
+              <tabbedpane title="Pedido"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -56,7 +58,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="Titulo"/>
+                  <text value="Numero"/>
                 </properties>
               </component>
               <component id="4ca30" class="javax.swing.JLabel">
@@ -65,7 +67,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="Autor"/>
+                  <text value="Contacto"/>
                 </properties>
               </component>
               <component id="be40c" class="javax.swing.JLabel">
@@ -74,7 +76,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="Editorial"/>
+                  <text value="Ceremonia"/>
                 </properties>
               </component>
               <component id="2506f" class="javax.swing.JLabel">
@@ -83,7 +85,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="Genero"/>
+                  <text value="Adorno"/>
                 </properties>
               </component>
               <component id="2177d" class="javax.swing.JLabel">
@@ -92,7 +94,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="Fecha edición"/>
+                  <text value="Fecha"/>
                 </properties>
               </component>
               <component id="ad546" class="javax.swing.JLabel">
@@ -101,7 +103,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="ISBN"/>
+                  <text value="Comentario"/>
                 </properties>
               </component>
               <component id="a3cca" class="javax.swing.JLabel">
@@ -113,7 +115,7 @@
                   <text value="Precio"/>
                 </properties>
               </component>
-              <component id="a1dfc" class="javax.swing.JTextField" binding="txtTitulo">
+              <component id="a1dfc" class="javax.swing.JTextField" binding="txtNumero">
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -122,21 +124,21 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="fa3e5" class="javax.swing.JComboBox" binding="comboAutor">
+              <component id="fa3e5" class="javax.swing.JComboBox" binding="comboContacto">
                 <constraints>
                   <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                   <forms/>
                 </constraints>
                 <properties/>
               </component>
-              <component id="7aaa4" class="javax.swing.JComboBox" binding="comboEditorial">
+              <component id="7aaa4" class="javax.swing.JComboBox" binding="comboCeremonia">
                 <constraints>
                   <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                   <forms/>
                 </constraints>
                 <properties/>
               </component>
-              <component id="4556a" class="javax.swing.JComboBox" binding="comboGenero">
+              <component id="4556a" class="javax.swing.JComboBox" binding="comboAdorno">
                 <constraints>
                   <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                   <forms/>
@@ -150,7 +152,7 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="fce66" class="javax.swing.JTextField" binding="txtIsbn">
+              <component id="fce66" class="javax.swing.JTextField" binding="txtComentario">
                 <constraints>
                   <grid row="10" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -159,7 +161,7 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="843f3" class="javax.swing.JTextField" binding="txtPrecioLibro">
+              <component id="843f3" class="javax.swing.JTextField" binding="txtPrecio">
                 <constraints>
                   <grid row="12" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -168,16 +170,16 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="a53bb" class="javax.swing.JButton" binding="btnLibrosEliminar">
+              <component id="a53bb" class="javax.swing.JButton" binding="btnPedidoEliminar">
                 <constraints>
-                  <grid row="18" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="20" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                   <forms/>
                 </constraints>
                 <properties>
                   <text value="Eliminar"/>
                 </properties>
               </component>
-              <component id="d00d8" class="javax.swing.JButton" binding="btnLibrosModificar">
+              <component id="d00d8" class="javax.swing.JButton" binding="btnPedidoModificar">
                 <constraints>
                   <grid row="16" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                   <forms/>
@@ -186,7 +188,7 @@
                   <text value="Modificar"/>
                 </properties>
               </component>
-              <component id="eceb3" class="javax.swing.JButton" binding="btnLibrosAnadir">
+              <component id="eceb3" class="javax.swing.JButton" binding="btnPedidoAnadir">
                 <constraints>
                   <grid row="14" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                   <forms/>
@@ -197,7 +199,7 @@
               </component>
               <scrollpane id="d708f">
                 <constraints>
-                  <grid row="14" column="2" row-span="5" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="14" column="2" row-span="7" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                   <forms defaultalign-horz="false" defaultalign-vert="false"/>
                 </constraints>
                 <properties/>
@@ -211,11 +213,20 @@
               </scrollpane>
               <component id="f241c" class="javax.swing.JLabel" binding="etiquetaEstado">
                 <constraints>
-                  <grid row="20" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="22" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                   <forms/>
                 </constraints>
                 <properties>
                   <text value=""/>
+                </properties>
+              </component>
+              <component id="2d63e" class="javax.swing.JButton" binding="btnPedidoLimpiar">
+                <constraints>
+                  <grid row="18" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties>
+                  <text value="Limpiar Campos"/>
                 </properties>
               </component>
             </children>

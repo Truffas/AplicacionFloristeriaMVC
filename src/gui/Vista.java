@@ -14,17 +14,17 @@ public class Vista extends JFrame{
     private final static String TITULO_FRAME="Aplicacion libreria";
 
     //libros
-    JPanel JPanelLibro;
-    JTextField txtTitulo;
-    JComboBox comboAutor;
-    JComboBox comboEditorial;
-    JComboBox comboGenero;
+    JPanel JPanelPedido;
+    JTextField txtNumero;
+    JComboBox comboContacto;
+    JComboBox comboCeremonia;
+    JComboBox comboAdorno;
     DatePicker fecha;
-    JTextField txtIsbn;
-    JTextField txtPrecioLibro;
-    JButton btnLibrosEliminar;
-    JButton btnLibrosModificar;
-    JButton btnLibrosAnadir;
+    JTextField txtComentario;
+    JTextField txtPrecio;
+    JButton btnPedidoEliminar;
+    JButton btnPedidoModificar;
+    JButton btnPedidoAnadir;
     JTable librosTabla;
 
     //autores
@@ -52,6 +52,7 @@ public class Vista extends JFrame{
 
     //busqueda
     private JLabel etiquetaEstado;
+    private JButton btnPedidoLimpiar;
 
     //default table model
     DefaultTableModel dtmEditoriales;
@@ -135,9 +136,9 @@ public class Vista extends JFrame{
         //lo coloco en una posicion que no tenga valor
         comboTipoEditorial.setSelectedIndex(-1);
         for (GenerosLibros constant: GenerosLibros.values()) {
-            comboGenero.addItem(constant.getValor());
+            comboAdorno.addItem(constant.getValor());
         }
-        comboGenero.setSelectedIndex(-1);
+        comboAdorno.setSelectedIndex(-1);
     }
     private void setTableModels() {
         //librosTabla, autoresTabla, editorialesTabla

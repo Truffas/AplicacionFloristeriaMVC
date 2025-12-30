@@ -36,20 +36,20 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
     }
 
     private void addActionListeners(ActionListener listener) {
-        vista.btnLibrosAnadir.addActionListener(listener);
-        vista.btnLibrosAnadir.setActionCommand("anadirLibro");
+        vista.btnPedidoAnadir.addActionListener(listener);
+        vista.btnPedidoAnadir.setActionCommand("anadirLibro");
         vista.btnAutoresAnadir.addActionListener(listener);
         vista.btnAutoresAnadir.setActionCommand("anadirAutor");
         vista.btnEditorialesAnadir.addActionListener(listener);
         vista.btnEditorialesAnadir.setActionCommand("anadirEditorial");
-        vista.btnLibrosEliminar.addActionListener(listener);
-        vista.btnLibrosEliminar.setActionCommand("eliminarLibro");
+        vista.btnPedidoEliminar.addActionListener(listener);
+        vista.btnPedidoEliminar.setActionCommand("eliminarLibro");
         vista.btnAutoresEliminar.addActionListener(listener);
         vista.btnAutoresEliminar.setActionCommand("eliminarAutor");
         vista.btnEditorialesEliminar.addActionListener(listener);
         vista.btnEditorialesEliminar.setActionCommand("eliminarEditorial");
-        vista.btnLibrosModificar.addActionListener(listener);
-        vista.btnLibrosModificar.setActionCommand("modificarLibro");
+        vista.btnPedidoModificar.addActionListener(listener);
+        vista.btnPedidoModificar.setActionCommand("modificarLibro");
         vista.btnAutoresModificar.addActionListener(listener);
         vista.btnAutoresModificar.setActionCommand("modificarAutor");
         vista.btnEditorialesModificar.addActionListener(listener);
@@ -134,13 +134,13 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                         && !((ListSelectionModel) e.getSource()).isSelectionEmpty()) {
                     if (e.getSource().equals(vista.librosTabla.getSelectionModel())) {
                         int row = vista.librosTabla.getSelectedRow();
-                        vista.txtTitulo.setText(String.valueOf(vista.librosTabla.getValueAt(row, 1)));
-                        vista.comboAutor.setSelectedItem(String.valueOf(vista.librosTabla.getValueAt(row, 5)));
-                        vista.comboEditorial.setSelectedItem(String.valueOf(vista.librosTabla.getValueAt(row, 3)));
-                        vista.comboGenero.setSelectedItem(String.valueOf(vista.librosTabla.getValueAt(row, 4)));
+                        vista.txtNumero.setText(String.valueOf(vista.librosTabla.getValueAt(row, 1)));
+                        vista.comboContacto.setSelectedItem(String.valueOf(vista.librosTabla.getValueAt(row, 5)));
+                        vista.comboCeremonia.setSelectedItem(String.valueOf(vista.librosTabla.getValueAt(row, 3)));
+                        vista.comboAdorno.setSelectedItem(String.valueOf(vista.librosTabla.getValueAt(row, 4)));
                         vista.fecha.setDate((Date.valueOf(String.valueOf(vista.librosTabla.getValueAt(row, 7)))).toLocalDate());
-                        vista.txtIsbn.setText(String.valueOf(vista.librosTabla.getValueAt(row, 2)));
-                        vista.txtPrecioLibro.setText(String.valueOf(vista.librosTabla.getValueAt(row, 6)));
+                        vista.txtComentario.setText(String.valueOf(vista.librosTabla.getValueAt(row, 2)));
+                        vista.txtPrecio.setText(String.valueOf(vista.librosTabla.getValueAt(row, 6)));
                     } else if (e.getValueIsAdjusting()
                             && ((ListSelectionModel) e.getSource()).isSelectionEmpty() && !refrescar) {
                         if (e.getSource().equals(vista.editorialesTabla.getSelectionModel())) {
@@ -174,13 +174,13 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 vista.txtPais.setText(String.valueOf(vista.autoresTabla.getValueAt(row, 4)));
             } else if (e.getSource().equals(vista.librosTabla.getSelectionModel())) {
                 int row = vista.librosTabla.getSelectedRow();
-                vista.txtTitulo.setText(String.valueOf(vista.librosTabla.getValueAt(row, 1)));
-                vista.comboAutor.setSelectedItem(String.valueOf(vista.librosTabla.getValueAt(row, 5)));
-                vista.comboEditorial.setSelectedItem(String.valueOf(vista.librosTabla.getValueAt(row, 3)));
-                vista.comboGenero.setSelectedItem(String.valueOf(vista.librosTabla.getValueAt(row, 4)));
+                vista.txtNumero.setText(String.valueOf(vista.librosTabla.getValueAt(row, 1)));
+                vista.comboContacto.setSelectedItem(String.valueOf(vista.librosTabla.getValueAt(row, 5)));
+                vista.comboCeremonia.setSelectedItem(String.valueOf(vista.librosTabla.getValueAt(row, 3)));
+                vista.comboAdorno.setSelectedItem(String.valueOf(vista.librosTabla.getValueAt(row, 4)));
                 vista.fecha.setDate((Date.valueOf(String.valueOf(vista.librosTabla.getValueAt(row, 7)))).toLocalDate());
-                vista.txtIsbn.setText(String.valueOf(vista.librosTabla.getValueAt(row, 2)));
-                vista.txtPrecioLibro.setText(String.valueOf(vista.librosTabla.getValueAt(row, 6)));
+                vista.txtComentario.setText(String.valueOf(vista.librosTabla.getValueAt(row, 2)));
+                vista.txtPrecio.setText(String.valueOf(vista.librosTabla.getValueAt(row, 6)));
             } else if (e.getValueIsAdjusting()
                     && ((ListSelectionModel) e.getSource()).isSelectionEmpty() && !refrescar) {
                 if (e.getSource().equals(vista.editorialesTabla.getSelectionModel())) {
@@ -228,17 +228,17 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                     if (comprobarLibroVacio()) {
                         Util.showErrorAlert("Rellena todos los campos");
                         vista.librosTabla.clearSelection();
-                    } else if (modelo.libroIsbnYaExiste(vista.txtIsbn.getText())) {
+                    } else if (modelo.libroIsbnYaExiste(vista.txtComentario.getText())) {
                         Util.showErrorAlert("Ese ISBN ya existe.\nIntroduce un libro diferente");
                         vista.librosTabla.clearSelection();
                     } else {
                         modelo.insertarLibro(
-                                vista.txtTitulo.getText(),
-                                vista.txtIsbn.getText(),
-                                String.valueOf(vista.comboEditorial.getSelectedItem()),
-                                String.valueOf(vista.comboGenero.getSelectedItem()),
-                                String.valueOf(vista.comboAutor.getSelectedItem()),
-                                Float.parseFloat(vista.txtPrecioLibro.getText()),
+                                vista.txtNumero.getText(),
+                                vista.txtComentario.getText(),
+                                String.valueOf(vista.comboCeremonia.getSelectedItem()),
+                                String.valueOf(vista.comboAdorno.getSelectedItem()),
+                                String.valueOf(vista.comboContacto.getSelectedItem()),
+                                Float.parseFloat(vista.txtPrecio.getText()),
                                 vista.fecha.getDate());
                     }
                 } catch (NumberFormatException nfe) {
@@ -256,12 +256,12 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                         vista.librosTabla.clearSelection();
                     } else {
                         modelo.modificarLibro(
-                                vista.txtTitulo.getText(),
-                                vista.txtIsbn.getText(),
-                                String.valueOf(vista.comboEditorial.getSelectedItem()),
-                                String.valueOf(vista.comboGenero.getSelectedItem()),
-                                String.valueOf(vista.comboAutor.getSelectedItem()),
-                                Float.parseFloat(vista.txtPrecioLibro.getText()),
+                                vista.txtNumero.getText(),
+                                vista.txtComentario.getText(),
+                                String.valueOf(vista.comboCeremonia.getSelectedItem()),
+                                String.valueOf(vista.comboAdorno.getSelectedItem()),
+                                String.valueOf(vista.comboContacto.getSelectedItem()),
+                                Float.parseFloat(vista.txtPrecio.getText()),
                                 vista.fecha.getDate(),
                                 (Integer) vista.librosTabla.getValueAt(vista.librosTabla.getSelectedRow(), 0));
                     }
@@ -380,9 +380,9 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
     private void refrescarEditorial() {
         try {
             vista.editorialesTabla.setModel(construirTableModelEditoriales(modelo.consultarEditorial()));
-            vista.comboEditorial.removeAllItems();
+            vista.comboCeremonia.removeAllItems();
             for(int i = 0; i < vista.dtmEditoriales.getRowCount(); i++) {
-                vista.comboEditorial.addItem(vista.dtmEditoriales.getValueAt(i, 0)+" - "+
+                vista.comboCeremonia.addItem(vista.dtmEditoriales.getValueAt(i, 0)+" - "+
                         vista.dtmEditoriales.getValueAt(i, 1));
             }
         } catch (SQLException e) {
@@ -415,9 +415,9 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
     private void refrescarAutores() {
         try {
             vista.autoresTabla.setModel(construirTableModeloAutores(modelo.consultarAutor()));
-            vista.comboAutor.removeAllItems();
+            vista.comboContacto.removeAllItems();
             for(int i = 0; i < vista.dtmAutores.getRowCount(); i++) {
-                vista.comboAutor.addItem(vista.dtmAutores.getValueAt(i, 0)+" - "+
+                vista.comboContacto.addItem(vista.dtmAutores.getValueAt(i, 0)+" - "+
                         vista.dtmAutores.getValueAt(i, 2)+", "+vista.dtmAutores.getValueAt(i, 1));
             }
         } catch (SQLException e) {
@@ -495,12 +495,12 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
     }
 
     private void borrarCamposLibros() {
-        vista.comboEditorial.setSelectedIndex(-1);
-        vista.comboAutor.setSelectedIndex(-1);
-        vista.txtTitulo.setText("");
-        vista.txtIsbn.setText("");
-        vista.comboGenero.setSelectedIndex(-1);
-        vista.txtPrecioLibro.setText("");
+        vista.comboCeremonia.setSelectedIndex(-1);
+        vista.comboContacto.setSelectedIndex(-1);
+        vista.txtNumero.setText("");
+        vista.txtComentario.setText("");
+        vista.comboAdorno.setSelectedIndex(-1);
+        vista.txtPrecio.setText("");
         vista.fecha.setText("");
     }
 
@@ -520,12 +520,12 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
     }
 
     private boolean comprobarLibroVacio() {
-        return vista.txtTitulo.getText().isEmpty() ||
-                vista.txtPrecioLibro.getText().isEmpty() ||
-                vista.txtIsbn.getText().isEmpty() ||
-                vista.comboGenero.getSelectedIndex() == -1 ||
-                vista.comboAutor.getSelectedIndex() == -1 ||
-                vista.comboEditorial.getSelectedIndex() == -1 ||
+        return vista.txtNumero.getText().isEmpty() ||
+                vista.txtPrecio.getText().isEmpty() ||
+                vista.txtComentario.getText().isEmpty() ||
+                vista.comboAdorno.getSelectedIndex() == -1 ||
+                vista.comboContacto.getSelectedIndex() == -1 ||
+                vista.comboCeremonia.getSelectedIndex() == -1 ||
                 vista.fecha.getText().isEmpty();
     }
 
