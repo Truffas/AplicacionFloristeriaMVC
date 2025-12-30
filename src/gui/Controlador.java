@@ -78,7 +78,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                     if (e.getSource().equals(vista.editorialesTabla.getSelectionModel())) {
                         int row = vista.editorialesTabla.getSelectedRow();
                         vista.txtNombreEditorial.setText(String.valueOf(vista.editorialesTabla.getValueAt(row, 1)));
-                        vista.txtOtro.setText(String.valueOf(vista.editorialesTabla.getValueAt(row, 2)));
+                        vista.txtOtroCeremonia.setText(String.valueOf(vista.editorialesTabla.getValueAt(row, 2)));
                         vista.txtTelefono.setText(String.valueOf(vista.editorialesTabla.getValueAt(row, 3)));
                         vista.comboTipoEditorial.setSelectedItem(String.valueOf(vista.editorialesTabla.getValueAt(row, 4)));
                         vista.txtDireccion.setText(String.valueOf(vista.editorialesTabla.getValueAt(row, 5)));
@@ -162,7 +162,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
             if (e.getSource().equals(vista.editorialesTabla.getSelectionModel())) {
                 int row = vista.editorialesTabla.getSelectedRow();
                 vista.txtNombreEditorial.setText(String.valueOf(vista.editorialesTabla.getValueAt(row, 1)));
-                vista.txtOtro.setText(String.valueOf(vista.editorialesTabla.getValueAt(row, 2)));
+                vista.txtOtroCeremonia.setText(String.valueOf(vista.editorialesTabla.getValueAt(row, 2)));
                 vista.txtTelefono.setText(String.valueOf(vista.editorialesTabla.getValueAt(row, 3)));
                 vista.comboTipoEditorial.setSelectedItem(String.valueOf(vista.editorialesTabla.getValueAt(row, 4)));
                 vista.txtDireccion.setText(String.valueOf(vista.editorialesTabla.getValueAt(row, 5)));
@@ -333,7 +333,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                         Util.showErrorAlert("Ese nombre ya existe.\nIntroduce una editorial diferente.");
                         vista.editorialesTabla.clearSelection();
                     } else {
-                        modelo.insertarEditorial(vista.txtNombreEditorial.getText(), vista.txtOtro.getText(),
+                        modelo.insertarEditorial(vista.txtNombreEditorial.getText(), vista.txtOtroCeremonia.getText(),
                                 vista.txtTelefono.getText(),
                                 (String) vista.comboTipoEditorial.getSelectedItem(),
                                 vista.txtDireccion.getText());
@@ -352,7 +352,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                         Util.showErrorAlert("Rellena todos los campos");
                         vista.editorialesTabla.clearSelection();
                     } else {
-                        modelo.modificarEditorial(vista.txtNombreEditorial.getText(), vista.txtOtro.getText(), vista.txtTelefono.getText(),
+                        modelo.modificarEditorial(vista.txtNombreEditorial.getText(), vista.txtOtroCeremonia.getText(), vista.txtTelefono.getText(),
                                 String.valueOf(vista.comboTipoEditorial.getSelectedItem()), vista.txtDireccion.getText(),
                                 (Integer) vista.editorialesTabla.getValueAt(vista.editorialesTabla.getSelectedRow(), 0));
                         refrescarEditorial();
@@ -513,7 +513,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
 
     private void borrarCamposEditoriales() {
         vista.txtNombreEditorial.setText("");
-        vista.txtOtro.setText("");
+        vista.txtOtroCeremonia.setText("");
         vista.txtTelefono.setText("");
         vista.comboTipoEditorial.setSelectedIndex(-1);
         vista.txtDireccion.setText("");
@@ -538,7 +538,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
 
     private boolean comprobarEditorialVacia() {
         return vista.txtNombreEditorial.getText().isEmpty() ||
-                vista.txtOtro.getText().isEmpty() ||
+                vista.txtOtroCeremonia.getText().isEmpty() ||
                 vista.txtTelefono.getText().isEmpty() ||
                 vista.comboTipoEditorial.getSelectedIndex() == -1 ||
                 vista.txtDireccion.getText().isEmpty();

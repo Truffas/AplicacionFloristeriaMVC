@@ -1,8 +1,8 @@
 package gui;
 
 import com.github.lgooddatepicker.components.DatePicker;
-import gui.base.enums.GenerosLibros;
-import gui.base.enums.TiposEditoriales;
+import gui.base.enums.TipoCeremonia;
+import gui.base.enums.TipoAdorno;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -39,9 +39,9 @@ public class Vista extends JFrame{
     JTable autoresTabla;
 
     //editoriales
-    JPanel JPanelEditorial;
+    JPanel JPanelCeremonia;
     JTextField txtNombreEditorial;
-    JTextField txtOtro;
+    JTextField txtOtroCeremonia;
     JTextField txtTelefono;
     JComboBox comboTipoEditorial;
     JTextField txtDireccion;
@@ -59,6 +59,21 @@ public class Vista extends JFrame{
     private DatePicker fechaCeremonia;
     private JRadioButton radioButtonTienda;
     private JRadioButton radioButtonEnvio;
+    private JPanel JPanelAdorno;
+    private JComboBox comboTipoAdorno;
+    private JTextField txtOtroAdorno;
+    private JTextField txtTipoFlores;
+    private JLabel lblTipoCeremonia;
+    private JLabel lblOtroCeremonia;
+    private JLabel lblTipoAdorno;
+    private JLabel lblOtroAdorno;
+    private JTextField txtMensaje;
+    private JLabel lblOpciones;
+    private JTextField txtOpciones;
+    private JButton btnAdornoAnadir;
+    private JButton btnAdornoModificar;
+    private JButton btnAdornoLimpiar;
+    private JButton btnAdornoEliminar;
 
     //default table model
     DefaultTableModel dtmEditoriales;
@@ -132,19 +147,19 @@ public class Vista extends JFrame{
         adminPasswordDialog.pack();
         adminPasswordDialog.setLocationRelativeTo(this);
     }
-    private void setEnumComboBox() { //AQUI ME ESTABA DANDO ERROR EL COMBOBOX DE TIPOS DE EDITORIALES POR ESO LO HE PUESTO COMO COMENTARIO
+    private void setEnumComboBox() {
         //recorrer los enumerados y los cargo en el comboBox correspondiente
         //.values cogemos valores del enumerado
         //.getValor los añadimos al combo
-        // for (TiposEditoriales constant: TiposEditoriales.values()) {
-        //    comboTipoEditorial.addItem(constant.getValor());
-        //}
-        //lo coloco en una posicion que no tenga valor
-        //comboTipoEditorial.setSelectedIndex(-1);
-        for (GenerosLibros constant: GenerosLibros.values()) {
-            comboAdorno.addItem(constant.getValor());
+        for (TipoAdorno constant: TipoAdorno.values()) {
+            comboTipoAdorno.addItem(constant.getValor());
         }
-        comboAdorno.setSelectedIndex(-1);
+        //lo coloco en una posicion que no tenga valor
+        comboTipoAdorno.setSelectedIndex(-1);
+        for (TipoCeremonia constant: TipoCeremonia.values()) {
+            comboTipoCeremonia.addItem(constant.getValor());
+        }
+        comboTipoCeremonia.setSelectedIndex(-1);
     }
     private void setTableModels() {
         //librosTabla, autoresTabla, editorialesTabla
