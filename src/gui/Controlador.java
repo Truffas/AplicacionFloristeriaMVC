@@ -38,22 +38,22 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
     private void addActionListeners(ActionListener listener) {
         vista.btnPedidoAnadir.addActionListener(listener);
         vista.btnPedidoAnadir.setActionCommand("anadirLibro");
-        vista.btnAutoresAnadir.addActionListener(listener);
-        vista.btnAutoresAnadir.setActionCommand("anadirAutor");
-        vista.btnEditorialesAnadir.addActionListener(listener);
-        vista.btnEditorialesAnadir.setActionCommand("anadirEditorial");
+        vista.btnContactoAnadir.addActionListener(listener);
+        vista.btnContactoAnadir.setActionCommand("anadirAutor");
+        vista.btnCeremoniaAnadir.addActionListener(listener);
+        vista.btnCeremoniaAnadir.setActionCommand("anadirEditorial");
         vista.btnPedidoEliminar.addActionListener(listener);
         vista.btnPedidoEliminar.setActionCommand("eliminarLibro");
-        vista.btnAutoresEliminar.addActionListener(listener);
-        vista.btnAutoresEliminar.setActionCommand("eliminarAutor");
-        vista.btnEditorialesEliminar.addActionListener(listener);
-        vista.btnEditorialesEliminar.setActionCommand("eliminarEditorial");
+        vista.btnContactoEliminar.addActionListener(listener);
+        vista.btnContactoEliminar.setActionCommand("eliminarAutor");
+        vista.btnCeremoniaEliminar.addActionListener(listener);
+        vista.btnCeremoniaEliminar.setActionCommand("eliminarEditorial");
         vista.btnPedidoModificar.addActionListener(listener);
         vista.btnPedidoModificar.setActionCommand("modificarLibro");
-        vista.btnAutoresModificar.addActionListener(listener);
-        vista.btnAutoresModificar.setActionCommand("modificarAutor");
-        vista.btnEditorialesModificar.addActionListener(listener);
-        vista.btnEditorialesModificar.setActionCommand("modificarEditorial");
+        vista.btnContactoModificar.addActionListener(listener);
+        vista.btnContactoModificar.setActionCommand("modificarAutor");
+        vista.btnCeremoniaModificar.addActionListener(listener);
+        vista.btnCeremoniaModificar.setActionCommand("modificarEditorial");
         vista.optionDialog.btnOpcionesGuardar.addActionListener(listener);
         vista.optionDialog.btnOpcionesGuardar.setActionCommand("guardarOpciones");
         vista.itemOpciones.addActionListener(listener);
@@ -78,10 +78,10 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                     if (e.getSource().equals(vista.editorialesTabla.getSelectionModel())) {
                         int row = vista.editorialesTabla.getSelectedRow();
                         vista.txtNombreEditorial.setText(String.valueOf(vista.editorialesTabla.getValueAt(row, 1)));
-                        vista.txtEmail.setText(String.valueOf(vista.editorialesTabla.getValueAt(row, 2)));
+                        vista.txtOtro.setText(String.valueOf(vista.editorialesTabla.getValueAt(row, 2)));
                         vista.txtTelefono.setText(String.valueOf(vista.editorialesTabla.getValueAt(row, 3)));
                         vista.comboTipoEditorial.setSelectedItem(String.valueOf(vista.editorialesTabla.getValueAt(row, 4)));
-                        vista.txtWeb.setText(String.valueOf(vista.editorialesTabla.getValueAt(row, 5)));
+                        vista.txtDireccion.setText(String.valueOf(vista.editorialesTabla.getValueAt(row, 5)));
                     } else if (e.getValueIsAdjusting()
                             && ((ListSelectionModel) e.getSource()).isSelectionEmpty() && !refrescar) {
                         if (e.getSource().equals(vista.editorialesTabla.getSelectionModel())) {
@@ -162,10 +162,10 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
             if (e.getSource().equals(vista.editorialesTabla.getSelectionModel())) {
                 int row = vista.editorialesTabla.getSelectedRow();
                 vista.txtNombreEditorial.setText(String.valueOf(vista.editorialesTabla.getValueAt(row, 1)));
-                vista.txtEmail.setText(String.valueOf(vista.editorialesTabla.getValueAt(row, 2)));
+                vista.txtOtro.setText(String.valueOf(vista.editorialesTabla.getValueAt(row, 2)));
                 vista.txtTelefono.setText(String.valueOf(vista.editorialesTabla.getValueAt(row, 3)));
                 vista.comboTipoEditorial.setSelectedItem(String.valueOf(vista.editorialesTabla.getValueAt(row, 4)));
-                vista.txtWeb.setText(String.valueOf(vista.editorialesTabla.getValueAt(row, 5)));
+                vista.txtDireccion.setText(String.valueOf(vista.editorialesTabla.getValueAt(row, 5)));
             } else if (e.getSource().equals(vista.autoresTabla.getSelectionModel())) {
                 int row = vista.autoresTabla.getSelectedRow();
                 vista.txtNombre.setText(String.valueOf(vista.autoresTabla.getValueAt(row, 1)));
@@ -333,10 +333,10 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                         Util.showErrorAlert("Ese nombre ya existe.\nIntroduce una editorial diferente.");
                         vista.editorialesTabla.clearSelection();
                     } else {
-                        modelo.insertarEditorial(vista.txtNombreEditorial.getText(), vista.txtEmail.getText(),
+                        modelo.insertarEditorial(vista.txtNombreEditorial.getText(), vista.txtOtro.getText(),
                                 vista.txtTelefono.getText(),
                                 (String) vista.comboTipoEditorial.getSelectedItem(),
-                                vista.txtWeb.getText());
+                                vista.txtDireccion.getText());
                         refrescarEditorial();
                     }
                 } catch (NumberFormatException nfe) {
@@ -352,8 +352,8 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                         Util.showErrorAlert("Rellena todos los campos");
                         vista.editorialesTabla.clearSelection();
                     } else {
-                        modelo.modificarEditorial(vista.txtNombreEditorial.getText(), vista.txtEmail.getText(), vista.txtTelefono.getText(),
-                                String.valueOf(vista.comboTipoEditorial.getSelectedItem()), vista.txtWeb.getText(),
+                        modelo.modificarEditorial(vista.txtNombreEditorial.getText(), vista.txtOtro.getText(), vista.txtTelefono.getText(),
+                                String.valueOf(vista.comboTipoEditorial.getSelectedItem()), vista.txtDireccion.getText(),
                                 (Integer) vista.editorialesTabla.getValueAt(vista.editorialesTabla.getSelectedRow(), 0));
                         refrescarEditorial();
                     }
@@ -513,10 +513,10 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
 
     private void borrarCamposEditoriales() {
         vista.txtNombreEditorial.setText("");
-        vista.txtEmail.setText("");
+        vista.txtOtro.setText("");
         vista.txtTelefono.setText("");
         vista.comboTipoEditorial.setSelectedIndex(-1);
-        vista.txtWeb.setText("");
+        vista.txtDireccion.setText("");
     }
 
     private boolean comprobarLibroVacio() {
@@ -538,10 +538,10 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
 
     private boolean comprobarEditorialVacia() {
         return vista.txtNombreEditorial.getText().isEmpty() ||
-                vista.txtEmail.getText().isEmpty() ||
+                vista.txtOtro.getText().isEmpty() ||
                 vista.txtTelefono.getText().isEmpty() ||
                 vista.comboTipoEditorial.getSelectedIndex() == -1 ||
-                vista.txtWeb.getText().isEmpty();
+                vista.txtDireccion.getText().isEmpty();
     }
 
     /*LISTENERS IPLEMENTOS NO UTILIZADOS*/

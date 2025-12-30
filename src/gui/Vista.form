@@ -231,8 +231,10 @@
               </component>
             </children>
           </grid>
-          <grid id="92468" binding="JPanelAutor" layout-manager="FormLayout">
+          <grid id="92468" binding="JPanelContacto" layout-manager="FormLayout">
             <rowspec value="center:d:noGrow"/>
+            <rowspec value="top:4dlu:noGrow"/>
+            <rowspec value="center:max(d;4px):noGrow"/>
             <rowspec value="top:4dlu:noGrow"/>
             <rowspec value="center:max(d;4px):noGrow"/>
             <rowspec value="top:4dlu:noGrow"/>
@@ -249,7 +251,7 @@
             <colspec value="left:4dlu:noGrow"/>
             <colspec value="fill:d:grow"/>
             <constraints>
-              <tabbedpane title="Autor"/>
+              <tabbedpane title="Contacto"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -324,7 +326,7 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="d458b" class="javax.swing.JButton" binding="btnAutoresAnadir">
+              <component id="d458b" class="javax.swing.JButton" binding="btnContactoAnadir">
                 <constraints>
                   <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                   <forms/>
@@ -333,7 +335,7 @@
                   <text value="Añadir"/>
                 </properties>
               </component>
-              <component id="f15c0" class="javax.swing.JButton" binding="btnAutoresModificar">
+              <component id="f15c0" class="javax.swing.JButton" binding="btnContactoModificar">
                 <constraints>
                   <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                   <forms/>
@@ -342,9 +344,9 @@
                   <text value="Modificar"/>
                 </properties>
               </component>
-              <component id="c0633" class="javax.swing.JButton" binding="btnAutoresEliminar">
+              <component id="c0633" class="javax.swing.JButton" binding="btnContactoEliminar">
                 <constraints>
-                  <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="14" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                   <forms/>
                 </constraints>
                 <properties>
@@ -353,7 +355,7 @@
               </component>
               <scrollpane id="40413">
                 <constraints>
-                  <grid row="8" column="2" row-span="5" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="8" column="2" row-span="7" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                   <forms defaultalign-horz="false" defaultalign-vert="false"/>
                 </constraints>
                 <properties/>
@@ -365,6 +367,15 @@
                   </component>
                 </children>
               </scrollpane>
+              <component id="f3aab" class="javax.swing.JButton" binding="btnContactoLimpiar">
+                <constraints>
+                  <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties>
+                  <text value="Limpiar Campos"/>
+                </properties>
+              </component>
             </children>
           </grid>
           <grid id="87a53" binding="JPanelEditorial" layout-manager="FormLayout">
@@ -383,11 +394,13 @@
             <rowspec value="center:max(d;4px):noGrow"/>
             <rowspec value="top:4dlu:noGrow"/>
             <rowspec value="center:max(d;4px):noGrow"/>
+            <rowspec value="top:4dlu:noGrow"/>
+            <rowspec value="center:max(d;4px):noGrow"/>
             <colspec value="fill:131px:noGrow"/>
             <colspec value="left:4dlu:noGrow"/>
             <colspec value="fill:d:grow"/>
             <constraints>
-              <tabbedpane title="Editorial"/>
+              <tabbedpane title="Ceremonia"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -398,7 +411,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="Nombre"/>
+                  <text value="Tipo"/>
                 </properties>
               </component>
               <component id="214b" class="javax.swing.JLabel">
@@ -407,7 +420,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="Email"/>
+                  <text value="Otro"/>
                 </properties>
               </component>
               <component id="3a381" class="javax.swing.JLabel">
@@ -416,7 +429,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="Teléfono"/>
+                  <text value="Fecha Entrega"/>
                 </properties>
               </component>
               <component id="60340" class="javax.swing.JLabel">
@@ -425,7 +438,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="Tipo"/>
+                  <text value="Lugar Entrega"/>
                 </properties>
               </component>
               <component id="b8061" class="javax.swing.JLabel">
@@ -434,19 +447,10 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="Web"/>
+                  <text value="Direccion"/>
                 </properties>
               </component>
-              <component id="cac98" class="javax.swing.JTextField" binding="txtNombreEditorial">
-                <constraints>
-                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                  <forms defaultalign-horz="false"/>
-                </constraints>
-                <properties/>
-              </component>
-              <component id="3391d" class="javax.swing.JTextField" binding="txtEmail">
+              <component id="3391d" class="javax.swing.JTextField" binding="txtOtro">
                 <constraints>
                   <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -455,23 +459,7 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="2e279" class="javax.swing.JTextField" binding="txtTelefono">
-                <constraints>
-                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                  <forms defaultalign-horz="false"/>
-                </constraints>
-                <properties/>
-              </component>
-              <component id="e7c57" class="javax.swing.JComboBox" binding="comboTipoEditorial">
-                <constraints>
-                  <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-                  <forms/>
-                </constraints>
-                <properties/>
-              </component>
-              <component id="713b8" class="javax.swing.JTextField" binding="txtWeb">
+              <component id="713b8" class="javax.swing.JTextField" binding="txtDireccion">
                 <constraints>
                   <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -480,7 +468,7 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="e4cc3" class="javax.swing.JButton" binding="btnEditorialesAnadir">
+              <component id="e4cc3" class="javax.swing.JButton" binding="btnCeremoniaAnadir">
                 <constraints>
                   <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                   <forms/>
@@ -489,7 +477,7 @@
                   <text value="Añadir"/>
                 </properties>
               </component>
-              <component id="97898" class="javax.swing.JButton" binding="btnEditorialesModificar">
+              <component id="97898" class="javax.swing.JButton" binding="btnCeremoniaModificar">
                 <constraints>
                   <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                   <forms/>
@@ -498,9 +486,9 @@
                   <text value="Modificar"/>
                 </properties>
               </component>
-              <component id="6da15" class="javax.swing.JButton" binding="btnEditorialesEliminar">
+              <component id="6da15" class="javax.swing.JButton" binding="btnCeremoniaEliminar">
                 <constraints>
-                  <grid row="14" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="16" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                   <forms/>
                 </constraints>
                 <properties>
@@ -509,7 +497,7 @@
               </component>
               <scrollpane id="401c1">
                 <constraints>
-                  <grid row="10" column="2" row-span="5" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="10" column="2" row-span="7" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                   <forms defaultalign-horz="false" defaultalign-vert="false"/>
                 </constraints>
                 <properties/>
@@ -521,10 +509,67 @@
                   </component>
                 </children>
               </scrollpane>
+              <component id="77611" class="javax.swing.JButton" binding="btnCeremoniaLimpiar">
+                <constraints>
+                  <grid row="14" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties>
+                  <text value="Limpiar Campos"/>
+                </properties>
+              </component>
+              <component id="3d9e2" class="javax.swing.JComboBox" binding="comboTipoCeremonia">
+                <constraints>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="bf276" class="com.github.lgooddatepicker.components.DatePicker" binding="fechaCeremonia">
+                <constraints>
+                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties/>
+              </component>
+              <splitpane id="f282f">
+                <constraints>
+                  <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                    <preferred-size width="200" height="200"/>
+                  </grid>
+                  <forms/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="ce10" class="javax.swing.JRadioButton" binding="radioButtonTienda">
+                    <constraints>
+                      <splitpane position="left"/>
+                    </constraints>
+                    <properties>
+                      <text value="En Tienda"/>
+                    </properties>
+                  </component>
+                  <component id="c3aa" class="javax.swing.JRadioButton" binding="radioButtonEnvio">
+                    <constraints>
+                      <splitpane position="right"/>
+                    </constraints>
+                    <properties>
+                      <text value="Por Envio"/>
+                    </properties>
+                  </component>
+                </children>
+              </splitpane>
             </children>
           </grid>
         </children>
       </tabbedpane>
     </children>
   </grid>
+  <buttonGroups>
+    <group name="LugarEntrega">
+      <member id="ce10"/>
+      <member id="c3aa"/>
+    </group>
+  </buttonGroups>
 </form>

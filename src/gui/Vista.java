@@ -28,31 +28,37 @@ public class Vista extends JFrame{
     JTable librosTabla;
 
     //autores
-    JPanel JPanelAutor;
+    JPanel JPanelContacto;
     JTextField txtNombre;
     JTextField txtApellidos;
     JTextField txtPais;
     DatePicker fechaNacimiento;
-    JButton btnAutoresAnadir;
-    JButton btnAutoresModificar;
-    JButton btnAutoresEliminar;
+    JButton btnContactoAnadir;
+    JButton btnContactoModificar;
+    JButton btnContactoEliminar;
     JTable autoresTabla;
 
     //editoriales
     JPanel JPanelEditorial;
     JTextField txtNombreEditorial;
-    JTextField txtEmail;
+    JTextField txtOtro;
     JTextField txtTelefono;
     JComboBox comboTipoEditorial;
-    JTextField txtWeb;
-    JButton btnEditorialesAnadir;
-    JButton btnEditorialesModificar;
-    JButton btnEditorialesEliminar;
+    JTextField txtDireccion;
+    JButton btnCeremoniaAnadir;
+    JButton btnCeremoniaModificar;
+    JButton btnCeremoniaEliminar;
     JTable editorialesTabla;
 
     //busqueda
     private JLabel etiquetaEstado;
     private JButton btnPedidoLimpiar;
+    private JButton btnContactoLimpiar;
+    private JButton btnCeremoniaLimpiar;
+    private JComboBox comboTipoCeremonia;
+    private DatePicker fechaCeremonia;
+    private JRadioButton radioButtonTienda;
+    private JRadioButton radioButtonEnvio;
 
     //default table model
     DefaultTableModel dtmEditoriales;
@@ -126,15 +132,15 @@ public class Vista extends JFrame{
         adminPasswordDialog.pack();
         adminPasswordDialog.setLocationRelativeTo(this);
     }
-    private void setEnumComboBox() {
+    private void setEnumComboBox() { //AQUI ME ESTABA DANDO ERROR EL COMBOBOX DE TIPOS DE EDITORIALES POR ESO LO HE PUESTO COMO COMENTARIO
         //recorrer los enumerados y los cargo en el comboBox correspondiente
         //.values cogemos valores del enumerado
         //.getValor los añadimos al combo
-        for (TiposEditoriales constant: TiposEditoriales.values()) {
-            comboTipoEditorial.addItem(constant.getValor());
-        }
+        // for (TiposEditoriales constant: TiposEditoriales.values()) {
+        //    comboTipoEditorial.addItem(constant.getValor());
+        //}
         //lo coloco en una posicion que no tenga valor
-        comboTipoEditorial.setSelectedIndex(-1);
+        //comboTipoEditorial.setSelectedIndex(-1);
         for (GenerosLibros constant: GenerosLibros.values()) {
             comboAdorno.addItem(constant.getValor());
         }
