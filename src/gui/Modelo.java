@@ -34,7 +34,7 @@ public class Modelo {
 
         try {
             conexion = DriverManager.getConnection(
-                    "jdbc:mysql://"+ip+":3308/mibase",user, password);
+                    "jdbc:mysql://"+ip+":3308/floristeria",user, password);
         } catch (SQLException sqle) {
             try {
                 conexion = DriverManager.getConnection(
@@ -78,8 +78,8 @@ public class Modelo {
         }
     }
 
-    void insertarAutor(String nombre, String apellidos, LocalDate fechaNacimiento, String pais) {
-        String sentenciaSql = "INSERT INTO autores (nombre, apellidos, fechanacimiento, pais) VALUES (?, ?, ?, ?)";
+    void insertarContacto(String nombre, String apellidos, LocalDate fechaNacimiento, String pais) {
+        String sentenciaSql = "INSERT INTO contacto (nombre, apellidos, fechanacimiento, pais) VALUES (?, ?, ?, ?)";
         PreparedStatement sentencia = null;
 
         try {

@@ -205,7 +205,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="77859" class="javax.swing.JTable" binding="librosTabla">
+                  <component id="77859" class="javax.swing.JTable" binding="pedidoTabla">
                     <constraints/>
                     <properties/>
                   </component>
@@ -361,7 +361,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="7a0a4" class="javax.swing.JTable" binding="autoresTabla">
+                  <component id="7a0a4" class="javax.swing.JTable" binding="contactoTabla">
                     <constraints/>
                     <properties/>
                   </component>
@@ -503,7 +503,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="1f326" class="javax.swing.JTable" binding="editorialesTabla">
+                  <component id="1f326" class="javax.swing.JTable" binding="ceremoniaTabla">
                     <constraints/>
                     <properties/>
                   </component>
@@ -697,7 +697,7 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="b96d3" class="javax.swing.JTable">
+                      <component id="b96d3" class="javax.swing.JTable" binding="adornoTabla">
                         <constraints/>
                         <properties/>
                       </component>

@@ -11,9 +11,9 @@ import java.awt.*;
 public class Vista extends JFrame{
     private JTabbedPane tabbedPane1;
     private JPanel panel1;
-    private final static String TITULO_FRAME="Aplicacion libreria";
+    private final static String TITULO_FRAME="Aplicación floristería";
 
-    //libros
+    //pedidos
     JPanel JPanelPedido;
     JTextField txtNumero;
     JComboBox comboContacto;
@@ -25,9 +25,10 @@ public class Vista extends JFrame{
     JButton btnPedidoEliminar;
     JButton btnPedidoModificar;
     JButton btnPedidoAnadir;
-    JTable librosTabla;
+    JTable pedidoTabla;
+    JButton btnPedidoLimpiar;
 
-    //autores
+    //contactos
     JPanel JPanelContacto;
     JTextField txtNombre;
     JTextField txtApellidos;
@@ -36,9 +37,10 @@ public class Vista extends JFrame{
     JButton btnContactoAnadir;
     JButton btnContactoModificar;
     JButton btnContactoEliminar;
-    JTable autoresTabla;
+    JTable contactoTabla;
+    JButton btnContactoLimpiar;
 
-    //editoriales
+    //ceremonias
     JPanel JPanelCeremonia;
     JTextField txtNombreEditorial;
     JTextField txtOtroCeremonia;
@@ -48,37 +50,40 @@ public class Vista extends JFrame{
     JButton btnCeremoniaAnadir;
     JButton btnCeremoniaModificar;
     JButton btnCeremoniaEliminar;
-    JTable editorialesTabla;
+    JTable ceremoniaTabla;
+    JButton btnCeremoniaLimpiar;
+    JComboBox comboTipoCeremonia;
+    DatePicker fechaCeremonia;
+    JRadioButton radioButtonTienda;
+    JRadioButton radioButtonEnvio;
+    JLabel lblTipoCeremonia;
+    JLabel lblOtroCeremonia;
+
+    //adornos
+    JPanel JPanelAdorno;
+    JComboBox comboTipoAdorno;
+    JTextField txtOtroAdorno;
+    JTextField txtTipoFlores;
+    JLabel lblTipoAdorno;
+    JLabel lblOtroAdorno;
+    JTextField txtMensaje;
+    JLabel lblOpciones;
+    JTextField txtOpciones;
+    JButton btnAdornoAnadir;
+    JButton btnAdornoModificar;
+    JButton btnAdornoLimpiar;
+    JButton btnAdornoEliminar;
+    JTable adornoTabla;
 
     //busqueda
     private JLabel etiquetaEstado;
-    private JButton btnPedidoLimpiar;
-    private JButton btnContactoLimpiar;
-    private JButton btnCeremoniaLimpiar;
-    private JComboBox comboTipoCeremonia;
-    private DatePicker fechaCeremonia;
-    private JRadioButton radioButtonTienda;
-    private JRadioButton radioButtonEnvio;
-    private JPanel JPanelAdorno;
-    private JComboBox comboTipoAdorno;
-    private JTextField txtOtroAdorno;
-    private JTextField txtTipoFlores;
-    private JLabel lblTipoCeremonia;
-    private JLabel lblOtroCeremonia;
-    private JLabel lblTipoAdorno;
-    private JLabel lblOtroAdorno;
-    private JTextField txtMensaje;
-    private JLabel lblOpciones;
-    private JTextField txtOpciones;
-    private JButton btnAdornoAnadir;
-    private JButton btnAdornoModificar;
-    private JButton btnAdornoLimpiar;
-    private JButton btnAdornoEliminar;
+
 
     //default table model
     DefaultTableModel dtmEditoriales;
     DefaultTableModel dtmAutores;
     DefaultTableModel dtmLibros;
+    DefaultTableModel dtmAdornos;
 
     //menubar
     JMenuItem itemOpciones;
@@ -164,12 +169,15 @@ public class Vista extends JFrame{
     private void setTableModels() {
         //librosTabla, autoresTabla, editorialesTabla
         this.dtmLibros=new DefaultTableModel();
-        this.librosTabla.setModel(dtmLibros);
+        this.pedidoTabla.setModel(dtmLibros);
 
         this.dtmAutores=new DefaultTableModel();
-        this.autoresTabla.setModel(dtmAutores);
+        this.contactoTabla.setModel(dtmAutores);
 
         this.dtmEditoriales=new DefaultTableModel();
-        this.editorialesTabla.setModel(dtmEditoriales);
+        this.ceremoniaTabla.setModel(dtmEditoriales);
+
+        this.dtmAdornos=new DefaultTableModel();
+        this.adornoTabla.setModel(dtmAdornos);
     }
 }
