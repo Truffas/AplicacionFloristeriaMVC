@@ -232,7 +232,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                         Util.showErrorAlert("Ese ISBN ya existe.\nIntroduce un libro diferente");
                         vista.pedidoTabla.clearSelection();
                     } else {
-                        modelo.insertarLibro(
+                        modelo.insertarPedido(
                                 vista.txtNumero.getText(),
                                 vista.txtComentario.getText(),
                                 String.valueOf(vista.comboCeremonia.getSelectedItem()),
@@ -255,7 +255,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                         Util.showErrorAlert("Rellena todos los campos");
                         vista.pedidoTabla.clearSelection();
                     } else {
-                        modelo.modificarLibro(
+                        modelo.modificarPedido(
                                 vista.txtNumero.getText(),
                                 vista.txtComentario.getText(),
                                 String.valueOf(vista.comboCeremonia.getSelectedItem()),
@@ -274,7 +274,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
             }
             break;
             case "eliminarLibro":
-                modelo.eliminarLibro((Integer) vista.pedidoTabla.getValueAt(vista.pedidoTabla.getSelectedRow(), 0));
+                modelo.eliminarPedido((Integer) vista.pedidoTabla.getValueAt(vista.pedidoTabla.getSelectedRow(), 0));
                 borrarCamposLibros();
                 refrescarLibros();
                 break;
@@ -283,7 +283,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                     if (comprobarAutorVacio()) {
                         Util.showErrorAlert("Rellena todos los campos");
                         vista.contactoTabla.clearSelection();
-                    } else if (modelo.autorNombreYaExiste(vista.txtNombre.getText(),
+                    } else if (modelo.contactoNombreYaExiste(vista.txtNombre.getText(),
                             vista.txtApellidos.getText())) {
                         Util.showErrorAlert("Ese nombre ya existe.\nIntroduce un autor diferente");
                         vista.contactoTabla.clearSelection();
@@ -320,7 +320,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
             }
             break;
             case "eliminarAutor":
-                modelo.eliminarAutor((Integer) vista.contactoTabla.getValueAt(vista.contactoTabla.getSelectedRow(), 0));
+                modelo.eliminarContacto((Integer) vista.contactoTabla.getValueAt(vista.contactoTabla.getSelectedRow(), 0));
                 borrarCamposAutores();
                 refrescarAutores();
                 break;
@@ -333,7 +333,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                         Util.showErrorAlert("Ese nombre ya existe.\nIntroduce una editorial diferente.");
                         vista.ceremoniaTabla.clearSelection();
                     } else {
-                        modelo.insertarEditorial(vista.txtNombreEditorial.getText(), vista.txtOtroCeremonia.getText(),
+                        modelo.insertarCeremonia(vista.txtNombreEditorial.getText(), vista.txtOtroCeremonia.getText(),
                                 vista.txtTelefono.getText(),
                                 (String) vista.comboTipoEditorial.getSelectedItem(),
                                 vista.txtDireccion.getText());
@@ -352,7 +352,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                         Util.showErrorAlert("Rellena todos los campos");
                         vista.ceremoniaTabla.clearSelection();
                     } else {
-                        modelo.modificarEditorial(vista.txtNombreEditorial.getText(), vista.txtOtroCeremonia.getText(), vista.txtTelefono.getText(),
+                        modelo.modificarCeremonia(vista.txtNombreEditorial.getText(), vista.txtOtroCeremonia.getText(), vista.txtTelefono.getText(),
                                 String.valueOf(vista.comboTipoEditorial.getSelectedItem()), vista.txtDireccion.getText(),
                                 (Integer) vista.ceremoniaTabla.getValueAt(vista.ceremoniaTabla.getSelectedRow(), 0));
                         refrescarEditorial();
@@ -365,7 +365,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
             }
             break;
             case "eliminarEditorial":
-                modelo.eliminarEditorial((Integer) vista.ceremoniaTabla.getValueAt(vista.ceremoniaTabla.getSelectedRow(), 0));
+                modelo.eliminarCeremonia((Integer) vista.ceremoniaTabla.getValueAt(vista.ceremoniaTabla.getSelectedRow(), 0));
                 borrarCamposEditoriales();
                 refrescarEditorial();
                 break;
@@ -379,7 +379,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
 
     private void refrescarEditorial() {
         try {
-            vista.ceremoniaTabla.setModel(construirTableModelEditoriales(modelo.consultarEditorial()));
+            vista.ceremoniaTabla.setModel(construirTableModelEditoriales(modelo.consultarCeremonia()));
             vista.comboCeremonia.removeAllItems();
             for(int i = 0; i < vista.dtmEditoriales.getRowCount(); i++) {
                 vista.comboCeremonia.addItem(vista.dtmEditoriales.getValueAt(i, 0)+" - "+
@@ -414,7 +414,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
 
     private void refrescarAutores() {
         try {
-            vista.contactoTabla.setModel(construirTableModeloAutores(modelo.consultarAutor()));
+            vista.contactoTabla.setModel(construirTableModeloAutores(modelo.consultarContacto()));
             vista.comboContacto.removeAllItems();
             for(int i = 0; i < vista.dtmAutores.getRowCount(); i++) {
                 vista.comboContacto.addItem(vista.dtmAutores.getValueAt(i, 0)+" - "+
@@ -449,7 +449,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
 
     private void refrescarLibros() {
         try {
-            vista.pedidoTabla.setModel(construirTableModelLibros(modelo.consultarLibros()));
+            vista.pedidoTabla.setModel(construirTableModelLibros(modelo.consultarPedido()));
         } catch (SQLException e) {
             e.printStackTrace();
         }

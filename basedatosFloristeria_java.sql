@@ -39,7 +39,6 @@ add foreign key (idcontacto) references contactos(idcontacto),
 add foreign key (idceremonia) references ceremonias(idceremonia);
 add foreign key (idadorno) references adornos(idadorno);
 --
-delimiter ||
 create function existeContacto (f_name varchar(50))
 returns bit
 begin
@@ -53,7 +52,7 @@ begin
 	set i=i+1;
 	end while;
 	return 0;
-end; ||
-delimiter ;
+end;
+
 
 

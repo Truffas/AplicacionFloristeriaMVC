@@ -58,7 +58,7 @@ public class Modelo {
     }
 
     private String leerFichero() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("basedatos_java.sql")) ;
+        BufferedReader reader = new BufferedReader(new FileReader("basedatosFloristeria_java.sql")) ;
             String linea;
             StringBuilder stringBuilder = new StringBuilder();
             while ((linea = reader.readLine()) != null) {
@@ -100,17 +100,17 @@ public class Modelo {
                 }
         }
     }
-    void insertarEditorial(String editorial, String email, String telefono, String tipoEditorial, String web) {
-        String sentenciaSql = "INSERT INTO editoriales (editorial, email, telefono, tipoeditorial, web) VALUES (?, ?, ?, ?, ?)";
+    void insertarCeremonia(String tipoCeremonia, String otroCeremonia, LocalDate fechaEntrega, String lugarEntrega, String direccion) {
+        String sentenciaSql = "INSERT INTO ceremonias (tipoceremonia, otroceremonia, fechaentrega, lugarentrega, direccion) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement sentencia = null;
 
         try {
             sentencia = conexion.prepareStatement(sentenciaSql);
-            sentencia.setString(1, editorial);
-            sentencia.setString(2, email);
-            sentencia.setString(3, telefono);
-            sentencia.setString(4, tipoEditorial);
-            sentencia.setString(5, web);
+            sentencia.setString(1, tipoCeremonia);
+            sentencia.setString(2, otroCeremonia);
+            sentencia.setDate(3, Date.valueOf(fechaEntrega));
+            sentencia.setString(4, lugarEntrega);
+            sentencia.setString(5, direccion);
             sentencia.executeUpdate();
         } catch (SQLException sqle) {
             sqle.printStackTrace();
@@ -123,24 +123,50 @@ public class Modelo {
                 }
         }
     }
-    void insertarLibro(String titulo, String isbn, String editorial, String genero, String autor,
-                       float precio, LocalDate fechaLanzamiento) {
-        String sentenciaSql = "INSERT INTO libros (titulo, isbn, ideditorial, genero, idautor, precio, fechalanzamiento) " +
+
+    void insertarAdorno(String tipoAdorno, String otroAdorno, String tipoFlores, String opciones, String mensaje) {
+        String sentenciaSql = "INSERT INTO adornos (tipoadorno, otroadorno, tipoflores, opciones, mensaje) VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement sentencia = null;
+
+        try {
+            sentencia = conexion.prepareStatement(sentenciaSql);
+            sentencia.setString(1, tipoAdorno);
+            sentencia.setString(2, otroAdorno);
+            sentencia.setString(3, tipoFlores);
+            sentencia.setString(4, opciones);
+            sentencia.setString(5, mensaje);
+            sentencia.executeUpdate();
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        } finally {
+            if (sentencia != null)
+                try {
+                    sentencia.close();
+                } catch (SQLException sqle) {
+                    sqle.printStackTrace();
+                }
+        }
+    }
+
+    void insertarPedido(String numero, String contacto, String ceremonia, String adorno, LocalDate fecha,
+                        String comentario, float precio) {
+        String sentenciaSql = "INSERT INTO pedidos (numero, idcontacto, idceremonia, idadorno, fecha, comentario, precio) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement sentencia = null;
 
-        int ideditorial = Integer.valueOf(editorial.split(" ")[0]);
-        int idautor = Integer.valueOf(autor.split(" ")[0]);
+        int idcontacto = Integer.valueOf(contacto.split(" ")[0]);
+        int idceremonia = Integer.valueOf(ceremonia.split(" ")[0]);
+        int idadorno = Integer.valueOf(adorno.split(" ")[0]);
 
         try {
             sentencia = conexion.prepareStatement(sentenciaSql);
-            sentencia.setString(1, titulo);
-            sentencia.setString(2, isbn);
-            sentencia.setInt(3, ideditorial);
-            sentencia.setString(4, genero);
-            sentencia.setInt(5, idautor);
-            sentencia.setFloat(6, precio);
-            sentencia.setDate(7, Date.valueOf(fechaLanzamiento));
+            sentencia.setString(1, numero);
+            sentencia.setInt(2, idcontacto);
+            sentencia.setInt(3, idceremonia);
+            sentencia.setInt(4, idadorno);
+            sentencia.setDate(5, Date.valueOf(fecha));
+            sentencia.setString(6, comentario);
+            sentencia.setFloat(7, precio);
             sentencia.executeUpdate();
         } catch (SQLException sqle) {
             sqle.printStackTrace();
@@ -153,20 +179,20 @@ public class Modelo {
                 }
         }
     }
-    void modificarEditorial(String editorial, String email, String telefono, String tipoEditorial, String web, int ideditorial){
+    void modificarCeremonia(String tipoCeremonia, String otroCeremonia, LocalDate fechaEntrega, String lugarEntrega, String direccion, int idceremonia){
 
-        String sentenciaSql = "UPDATE editoriales SET editorial = ?, email = ?, telefono = ?, tipoeditorial = ?, web = ?" +
-                "WHERE ideditorial = ?";
+        String sentenciaSql = "UPDATE ceremonias SET tipoceremonia = ?, otroceremonia = ?, fechaentrega = ?, lugarentrega = ?, direccion = ?" +
+                "WHERE idceremonia = ?";
         PreparedStatement sentencia = null;
 
         try {
             sentencia = conexion.prepareStatement(sentenciaSql);
-            sentencia.setString(1, editorial);
-            sentencia.setString(2, email);
-            sentencia.setString(3, telefono);
-            sentencia.setString(4, tipoEditorial);
-            sentencia.setString(5, web);
-            sentencia.setInt(6, ideditorial);
+            sentencia.setString(1, tipoCeremonia);
+            sentencia.setString(2, otroCeremonia);
+            sentencia.setDate(3, Date.valueOf(fechaEntrega));
+            sentencia.setString(4, lugarEntrega);
+            sentencia.setString(5, direccion);
+            sentencia.setInt(6, idceremonia);
             sentencia.executeUpdate();
         } catch (SQLException sqle) {
             sqle.printStackTrace();
@@ -179,19 +205,47 @@ public class Modelo {
                 }
         }
     }
-    void modificarAutor(String nombre, String apellidos, LocalDate fechanacimiento, String pais, int idautor){
 
-        String sentenciaSql = "UPDATE autores SET nombre = ?, apellidos = ?, fechanacimiento = ?, pais = ?" +
-                "WHERE idautor = ?";
+    void modificarAdorno(String tipoAdorno, String otroAdorno, String tipoFlores, String opciones, String mensaje, int idadorno){
+
+        String sentenciaSql = "UPDATE adornos SET tipoadorno = ?, otroadorno = ?, tipoflores = ?, opciones = ?, mensaje = ?" +
+                "WHERE idadorno = ?";
+        PreparedStatement sentencia = null;
+
+        try {
+            sentencia = conexion.prepareStatement(sentenciaSql);
+            sentencia.setString(1, tipoAdorno);
+            sentencia.setString(2, otroAdorno);
+            sentencia.setString(3, tipoFlores);
+            sentencia.setString(4, opciones);
+            sentencia.setString(5, mensaje);
+            sentencia.setInt(6, idadorno);
+            sentencia.executeUpdate();
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        } finally {
+            if (sentencia != null)
+                try {
+                    sentencia.close();
+                } catch (SQLException sqle) {
+                    sqle.printStackTrace();
+                }
+        }
+    }
+
+    void modificarContacto(String nombre, String apellidos, LocalDate fechaNacimiento, String pais, int idcontacto){
+
+        String sentenciaSql = "UPDATE contactos SET nombre = ?, apellidos = ?, fechanacimiento = ?, pais = ?" +
+                "WHERE idcontacto = ?";
         PreparedStatement sentencia = null;
 
         try {
             sentencia = conexion.prepareStatement(sentenciaSql);
             sentencia.setString(1, nombre);
             sentencia.setString(2, apellidos);
-            sentencia.setDate(3, Date.valueOf(fechanacimiento));
+            sentencia.setDate(3, Date.valueOf(fechaNacimiento));
             sentencia.setString(4, pais);
-            sentencia.setInt(5, idautor);
+            sentencia.setInt(5, idcontacto);
             sentencia.executeUpdate();
         } catch (SQLException sqle) {
             sqle.printStackTrace();
@@ -205,26 +259,27 @@ public class Modelo {
         }
     }
 
-    void modificarLibro(String titulo, String isbn, String editorial, String genero, String autor,
-                        float precio, LocalDate fechalanzamiento, int idlibro) {
+    void modificarPedido(String numero, String contacto, String ceremonia, String adorno, LocalDate fecha,
+                         String comentario, float precio, int idpedido) {
 
-        String sentenciaSql = "UPDATE libros SET titulo = ?, isbn = ?, ideditorial = ?, genero = ?, " +
-                "idautor = ?, precio = ?, fechalanzamiento = ? WHERE idlibro = ?";
+        String sentenciaSql = "UPDATE pedidos SET numero = ?, idcontacto = ?, idceremonia = ?, idadorno = ?, " +
+                "fecha = ?, comentario = ?, precio = ? WHERE idpedido = ?";
         PreparedStatement sentencia = null;
 
-        int ideditorial = Integer.valueOf(editorial.split(" ")[0]);
-        int idautor = Integer.valueOf(autor.split(" ")[0]);
+        int idcontacto = Integer.valueOf(contacto.split(" ")[0]);
+        int idceremonia = Integer.valueOf(ceremonia.split(" ")[0]);
+        int idadorno = Integer.valueOf(adorno.split(" ")[0]);
 
         try {
             sentencia = conexion.prepareStatement(sentenciaSql);
-            sentencia.setString(1, titulo);
-            sentencia.setString(2, isbn);
-            sentencia.setInt(3, ideditorial);
-            sentencia.setString(4, genero);
-            sentencia.setInt(5, idautor);
-            sentencia.setFloat(6, precio);
-            sentencia.setDate(7, Date.valueOf(fechalanzamiento));
-            sentencia.setInt(8, idlibro);
+            sentencia.setString(1, numero);
+            sentencia.setInt(2, idcontacto);
+            sentencia.setInt(3, idceremonia);
+            sentencia.setInt(4, idadorno);
+            sentencia.setDate(5, Date.valueOf(fecha));
+            sentencia.setString(6, comentario);
+            sentencia.setFloat(7, precio);
+            sentencia.setInt(8, idpedido);
             sentencia.executeUpdate();
         } catch (SQLException sqle) {
             sqle.printStackTrace();
@@ -237,33 +292,13 @@ public class Modelo {
                 }
         }
     }
-    void eliminarEditorial(int ideditorial) {
-        String sentenciaSql = "DELETE FROM editoriales WHERE ideditorial = ?";
-        PreparedStatement sentencia = null;
-
-        try {
-            sentencia = conexion.prepareStatement(sentenciaSql);
-            sentencia.setInt(1, ideditorial);
-            sentencia.executeUpdate();
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-        } finally {
-            if (sentencia != null)
-                try {
-                    sentencia.close();
-                } catch (SQLException sqle) {
-                    sqle.printStackTrace();
-                }
-        }
-    }
-
-    void eliminarAutor(int idautor) {
-        String sentenciaSql = "DELETE FROM autores WHERE idautor = ?";
+    void eliminarCeremonia(int idceremonia) {
+        String sentenciaSql = "DELETE FROM ceremonias WHERE idceremonia = ?";
         PreparedStatement sentencia = null;
 
         try {
             sentencia = conexion.prepareStatement(sentenciaSql);
-            sentencia.setInt(1, idautor);
+            sentencia.setInt(1, idceremonia);
             sentencia.executeUpdate();
         } catch (SQLException sqle) {
             sqle.printStackTrace();
@@ -277,13 +312,13 @@ public class Modelo {
         }
     }
 
-    void eliminarLibro(int idlibro) {
-        String sentenciaSql = "DELETE FROM libros WHERE idlibro = ?";
+    void eliminarAdorno(int idadorno) {
+        String sentenciaSql = "DELETE FROM adornos WHERE idadorno = ?";
         PreparedStatement sentencia = null;
 
         try {
             sentencia = conexion.prepareStatement(sentenciaSql);
-            sentencia.setInt(1, idlibro);
+            sentencia.setInt(1, idadorno);
             sentencia.executeUpdate();
         } catch (SQLException sqle) {
             sqle.printStackTrace();
@@ -296,47 +331,106 @@ public class Modelo {
                 }
         }
     }
-    ResultSet consultarEditorial() throws SQLException {
-        String sentenciaSql = "SELECT ideditorial as 'ID', " +
-                "editorial as 'Nombre editorial', " +
-                "email as 'Email', " +
-                "telefono as 'Teléfono', " +
-                "tipoeditorial as 'Tipo', " +
-                "web as 'Web' " +
-                "FROM editoriales";
+
+
+    void eliminarContacto(int idcontacto) {
+        String sentenciaSql = "DELETE FROM contactos WHERE idcontacto = ?";
+        PreparedStatement sentencia = null;
+
+        try {
+            sentencia = conexion.prepareStatement(sentenciaSql);
+            sentencia.setInt(1, idcontacto);
+            sentencia.executeUpdate();
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        } finally {
+            if (sentencia != null)
+                try {
+                    sentencia.close();
+                } catch (SQLException sqle) {
+                    sqle.printStackTrace();
+                }
+        }
+    }
+
+    void eliminarPedido(int idpedido) {
+        String sentenciaSql = "DELETE FROM pedidos WHERE idpedido = ?";
+        PreparedStatement sentencia = null;
+
+        try {
+            sentencia = conexion.prepareStatement(sentenciaSql);
+            sentencia.setInt(1, idpedido);
+            sentencia.executeUpdate();
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        } finally {
+            if (sentencia != null)
+                try {
+                    sentencia.close();
+                } catch (SQLException sqle) {
+                    sqle.printStackTrace();
+                }
+        }
+    }
+    ResultSet consultarCeremonia() throws SQLException {
+        String sentenciaSql = "SELECT idceremonia as 'ID', " +
+                "tipoceremonia as 'Tipo ceremonia', " +
+                "otroceremonia as 'Otro', " +
+                "fechaentrega as 'Fecha entrega', " +
+                "lugarentrega as 'Lugar entrega', " +
+                "direccion as 'Dirección' " +
+                "FROM ceremonias";
         PreparedStatement sentencia = null;
         ResultSet resultado = null;
         sentencia = conexion.prepareStatement(sentenciaSql);
         resultado = sentencia.executeQuery();
         return resultado;
     }
-    ResultSet consultarAutor() throws SQLException {
-        String sentenciaSql = "SELECT idautor as 'ID', " +
+
+    ResultSet consultarAdorno() throws SQLException {
+        String sentenciaSql = "SELECT idadorno as 'ID', " +
+                "tipoadorno as 'Tipo adorno', " +
+                "otroadorno as 'Otro', " +
+                "tipoflores as 'Tipo flores', " +
+                "opciones as 'Opciones', " +
+                "mensaje as 'Mensaje' " +
+                "FROM adornos";
+        PreparedStatement sentencia = null;
+        ResultSet resultado = null;
+        sentencia = conexion.prepareStatement(sentenciaSql);
+        resultado = sentencia.executeQuery();
+        return resultado;
+    }
+
+    ResultSet consultarContacto() throws SQLException {
+        String sentenciaSql = "SELECT idcontacto as 'ID', " +
                 "nombre as 'Nombre', " +
                 "apellidos as 'Apellidos', " +
                 "fechanacimiento as 'Fecha de nacimiento'," +
                 "pais as 'País de origen' " +
-                "FROM autores";
+                "FROM contactos";
         PreparedStatement sentencia = null;
         ResultSet resultado = null;
         sentencia = conexion.prepareStatement(sentenciaSql);
         resultado = sentencia.executeQuery();
         return resultado;
     }
-    ResultSet consultarLibros() throws SQLException {
-        String sentenciaSql = "SELECT b.idlibro as 'ID', " +
-                "b.titulo as 'Título', " +
-                "b.isbn as 'ISBN', " +
-                "concat(e.ideditorial, ' - ', e.editorial) as 'Editorial', " +
-                "b.genero as 'Género', " +
-                "concat(a.idautor, ' - ', a.apellidos, ', ', a.nombre) as 'Autor', " +
-                "b.precio as 'Precio', " +
-                "b.fechalanzamiento as 'Fecha de publicación'" +
-                "FROM libros as b " +
-                "inner join editoriales as e " +
-                "on e.ideditorial = b.ideditorial " +
-                "inner join autores as a " +
-                "on a.idautor = b.idautor";
+    ResultSet consultarPedido() throws SQLException {
+        String sentenciaSql = "SELECT p.idpedido as 'ID', " +
+                "p.numero as 'Número', " +
+                "concat(c.idcontacto, ' - ', c.apellidos, ', ', c.nombre) as 'Contacto', " +
+                "concat(e.idceremonia, ' - ', e.tipoceremonia, ' ', e.otroceremonia) as 'Ceremonia', " +
+                "concat(a.idadorno, ' - ', a.tipoadorno, ' ', a.otroadorno) as 'Adorno', " +
+                "p.fecha as 'Fecha de pedido', " +
+                "p.comentario as 'comentario', " +
+                "p.precio as 'Precio'" +
+                "FROM pedidos as p " +
+                "inner join contacto as c " +
+                "on c.idcontacto = p.idcontacto " +
+                "inner join ceremonia as e " +
+                "on e.idceremonia = p.idceremonia" +
+                "inner join adorno as a " +
+                "on a.idadorno = p.idadorno";
         PreparedStatement sentencia = null;
         ResultSet resultado = null;
         sentencia = conexion.prepareStatement(sentenciaSql);
@@ -388,47 +482,13 @@ public class Modelo {
         this.adminPassword = adminPass;
     }
 
-    public boolean libroIsbnYaExiste(String isbn) {
-        String salesConsult = "SELECT existeIsbn(?)";
-        PreparedStatement function;
-        boolean isbnExists = false;
-        try {
-            function = conexion.prepareStatement(salesConsult);
-            function.setString(1, isbn);
-            ResultSet rs = function.executeQuery();
-            rs.next();
-
-            isbnExists = rs.getBoolean(1);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return isbnExists;
-    }
-
-    public boolean editorialNombreYaExiste(String nombre) {
-        String editorialNameConsult = "SELECT existeNombreEditorial(?)";
-        PreparedStatement function;
-        boolean nameExists = false;
-        try {
-            function = conexion.prepareStatement(editorialNameConsult);
-            function.setString(1, nombre);
-            ResultSet rs = function.executeQuery();
-            rs.next();
-
-            nameExists = rs.getBoolean(1);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return nameExists;
-    }
-
-    public boolean autorNombreYaExiste(String nombre, String apellidos) {
+    public boolean contactoNombreYaExiste(String nombre, String apellidos) {
         String completeName = apellidos + ", " + nombre;
-        String authorNameConsult = "SELECT existeNombreAutor(?)";
+        String contactConsult = "SELECT existeContacto(?)";
         PreparedStatement function;
         boolean nameExists = false;
         try {
-            function = conexion.prepareStatement(authorNameConsult);
+            function = conexion.prepareStatement(contactConsult);
             function.setString(1, completeName);
             ResultSet rs = function.executeQuery();
             rs.next();
