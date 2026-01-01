@@ -53,7 +53,7 @@ public class Vista extends JFrame{
     JTable ceremoniaTabla;
     JButton btnCeremoniaLimpiar;
     JComboBox comboTipoCeremonia;
-    DatePicker fechaCeremonia;
+    DatePicker fechaEntrega;
     JRadioButton radioButtonTienda;
     JRadioButton radioButtonEnvio;
     JLabel lblTipoCeremonia;
@@ -80,7 +80,7 @@ public class Vista extends JFrame{
 
 
     //default table model
-    DefaultTableModel dtmEditoriales;
+    DefaultTableModel dtmCeremonias;
     DefaultTableModel dtmAutores;
     DefaultTableModel dtmLibros;
     DefaultTableModel dtmAdornos;
@@ -174,8 +174,8 @@ public class Vista extends JFrame{
         this.dtmAutores=new DefaultTableModel();
         this.contactoTabla.setModel(dtmAutores);
 
-        this.dtmEditoriales=new DefaultTableModel();
-        this.ceremoniaTabla.setModel(dtmEditoriales);
+        this.dtmCeremonias =new DefaultTableModel();
+        this.ceremoniaTabla.setModel(dtmCeremonias);
 
         this.dtmAdornos=new DefaultTableModel();
         this.adornoTabla.setModel(dtmAdornos);

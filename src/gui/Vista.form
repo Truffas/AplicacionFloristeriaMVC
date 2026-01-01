@@ -122,7 +122,10 @@
                   </grid>
                   <forms defaultalign-horz="false"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <editable value="false"/>
+                  <enabled value="true"/>
+                </properties>
               </component>
               <component id="fa3e5" class="javax.swing.JComboBox" binding="comboContacto">
                 <constraints>
@@ -525,7 +528,7 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="bf276" class="com.github.lgooddatepicker.components.DatePicker" binding="fechaCeremonia">
+              <component id="bf276" class="com.github.lgooddatepicker.components.DatePicker" binding="fechaEntrega">
                 <constraints>
                   <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                   <forms/>

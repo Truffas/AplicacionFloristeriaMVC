@@ -79,7 +79,7 @@ public class Modelo {
     }
 
     void insertarContacto(String nombre, String apellidos, LocalDate fechaNacimiento, String pais) {
-        String sentenciaSql = "INSERT INTO contacto (nombre, apellidos, fechanacimiento, pais) VALUES (?, ?, ?, ?)";
+        String sentenciaSql = "INSERT INTO contactos (nombre, apellidos, fechanacimiento, pais) VALUES (?, ?, ?, ?)";
         PreparedStatement sentencia = null;
 
         try {
@@ -148,10 +148,10 @@ public class Modelo {
         }
     }
 
-    void insertarPedido(String numero, String contacto, String ceremonia, String adorno, LocalDate fecha,
+    void insertarPedido(String contacto, String ceremonia, String adorno, LocalDate fecha,
                         String comentario, float precio) {
-        String sentenciaSql = "INSERT INTO pedidos (numero, idcontacto, idceremonia, idadorno, fecha, comentario, precio) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sentenciaSql = "INSERT INTO pedidos (idcontacto, idceremonia, idadorno, fecha, comentario, precio) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement sentencia = null;
 
         int idcontacto = Integer.valueOf(contacto.split(" ")[0]);
@@ -160,13 +160,13 @@ public class Modelo {
 
         try {
             sentencia = conexion.prepareStatement(sentenciaSql);
-            sentencia.setString(1, numero);
-            sentencia.setInt(2, idcontacto);
-            sentencia.setInt(3, idceremonia);
-            sentencia.setInt(4, idadorno);
-            sentencia.setDate(5, Date.valueOf(fecha));
-            sentencia.setString(6, comentario);
-            sentencia.setFloat(7, precio);
+            //sentencia.setString(0, numero);
+            sentencia.setInt(1, idcontacto);
+            sentencia.setInt(2, idceremonia);
+            sentencia.setInt(3, idadorno);
+            sentencia.setDate(4, Date.valueOf(fecha));
+            sentencia.setString(5, comentario);
+            sentencia.setFloat(6, precio);
             sentencia.executeUpdate();
         } catch (SQLException sqle) {
             sqle.printStackTrace();
@@ -181,7 +181,7 @@ public class Modelo {
     }
     void modificarCeremonia(String tipoCeremonia, String otroCeremonia, LocalDate fechaEntrega, String lugarEntrega, String direccion, int idceremonia){
 
-        String sentenciaSql = "UPDATE ceremonias SET tipoceremonia = ?, otroceremonia = ?, fechaentrega = ?, lugarentrega = ?, direccion = ?" +
+        String sentenciaSql = "UPDATE ceremonias SET tipoceremonia = ?, otroceremonia = ?, fechaentrega = ?, lugarentrega = ?, direccion = ? " +
                 "WHERE idceremonia = ?";
         PreparedStatement sentencia = null;
 
@@ -208,7 +208,7 @@ public class Modelo {
 
     void modificarAdorno(String tipoAdorno, String otroAdorno, String tipoFlores, String opciones, String mensaje, int idadorno){
 
-        String sentenciaSql = "UPDATE adornos SET tipoadorno = ?, otroadorno = ?, tipoflores = ?, opciones = ?, mensaje = ?" +
+        String sentenciaSql = "UPDATE adornos SET tipoadorno = ?, otroadorno = ?, tipoflores = ?, opciones = ?, mensaje = ? " +
                 "WHERE idadorno = ?";
         PreparedStatement sentencia = null;
 
@@ -235,7 +235,7 @@ public class Modelo {
 
     void modificarContacto(String nombre, String apellidos, LocalDate fechaNacimiento, String pais, int idcontacto){
 
-        String sentenciaSql = "UPDATE contactos SET nombre = ?, apellidos = ?, fechanacimiento = ?, pais = ?" +
+        String sentenciaSql = "UPDATE contactos SET nombre = ?, apellidos = ?, fechanacimiento = ?, pais = ? " +
                 "WHERE idcontacto = ?";
         PreparedStatement sentencia = null;
 
@@ -259,10 +259,10 @@ public class Modelo {
         }
     }
 
-    void modificarPedido(String numero, String contacto, String ceremonia, String adorno, LocalDate fecha,
+    void modificarPedido(String contacto, String ceremonia, String adorno, LocalDate fecha,
                          String comentario, float precio, int idpedido) {
 
-        String sentenciaSql = "UPDATE pedidos SET numero = ?, idcontacto = ?, idceremonia = ?, idadorno = ?, " +
+        String sentenciaSql = "UPDATE pedidos SET idcontacto = ?, idceremonia = ?, idadorno = ?, " +
                 "fecha = ?, comentario = ?, precio = ? WHERE idpedido = ?";
         PreparedStatement sentencia = null;
 
@@ -272,14 +272,13 @@ public class Modelo {
 
         try {
             sentencia = conexion.prepareStatement(sentenciaSql);
-            sentencia.setString(1, numero);
-            sentencia.setInt(2, idcontacto);
-            sentencia.setInt(3, idceremonia);
-            sentencia.setInt(4, idadorno);
-            sentencia.setDate(5, Date.valueOf(fecha));
-            sentencia.setString(6, comentario);
-            sentencia.setFloat(7, precio);
-            sentencia.setInt(8, idpedido);
+            sentencia.setInt(1, idcontacto);
+            sentencia.setInt(2, idceremonia);
+            sentencia.setInt(3, idadorno);
+            sentencia.setDate(4, Date.valueOf(fecha));
+            sentencia.setString(5, comentario);
+            sentencia.setFloat(6, precio);
+            sentencia.setInt(7, idpedido);
             sentencia.executeUpdate();
         } catch (SQLException sqle) {
             sqle.printStackTrace();
@@ -417,19 +416,19 @@ public class Modelo {
     }
     ResultSet consultarPedido() throws SQLException {
         String sentenciaSql = "SELECT p.idpedido as 'ID', " +
-                "p.numero as 'Número', " +
+                "p.idpedido as 'Numero', " +
                 "concat(c.idcontacto, ' - ', c.apellidos, ', ', c.nombre) as 'Contacto', " +
                 "concat(e.idceremonia, ' - ', e.tipoceremonia, ' ', e.otroceremonia) as 'Ceremonia', " +
                 "concat(a.idadorno, ' - ', a.tipoadorno, ' ', a.otroadorno) as 'Adorno', " +
                 "p.fecha as 'Fecha de pedido', " +
                 "p.comentario as 'comentario', " +
-                "p.precio as 'Precio'" +
+                "p.precio as 'Precio' " +
                 "FROM pedidos as p " +
-                "inner join contacto as c " +
+                "inner join contactos as c " +
                 "on c.idcontacto = p.idcontacto " +
-                "inner join ceremonia as e " +
-                "on e.idceremonia = p.idceremonia" +
-                "inner join adorno as a " +
+                "inner join ceremonias as e " +
+                "on e.idceremonia = p.idceremonia " +
+                "inner join adornos as a " +
                 "on a.idadorno = p.idadorno";
         PreparedStatement sentencia = null;
         ResultSet resultado = null;

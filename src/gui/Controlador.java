@@ -7,6 +7,7 @@ import javax.swing.event.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.Vector;
 
 
@@ -29,31 +30,46 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
     }
 
     private void refrescarTodo() {
-        refrescarAutores();
-        refrescarEditorial();
-        refrescarLibros();
+        refrescarContactos();
+        refrescarCeremonias();
+        refrescarAdornos();
+        refrescarPedidos();
         refrescar = false;
     }
 
     private void addActionListeners(ActionListener listener) {
         vista.btnPedidoAnadir.addActionListener(listener);
-        vista.btnPedidoAnadir.setActionCommand("anadirLibro");
+        vista.btnPedidoAnadir.setActionCommand("anadirPedido");
         vista.btnContactoAnadir.addActionListener(listener);
-        vista.btnContactoAnadir.setActionCommand("anadirAutor");
+        vista.btnContactoAnadir.setActionCommand("anadirContacto");
         vista.btnCeremoniaAnadir.addActionListener(listener);
-        vista.btnCeremoniaAnadir.setActionCommand("anadirEditorial");
+        vista.btnCeremoniaAnadir.setActionCommand("anadirCeremonia");
+        vista.btnAdornoAnadir.addActionListener(listener);
+        vista.btnAdornoAnadir.setActionCommand("anadirAdorno");
         vista.btnPedidoEliminar.addActionListener(listener);
-        vista.btnPedidoEliminar.setActionCommand("eliminarLibro");
+        vista.btnPedidoEliminar.setActionCommand("eliminarPedido");
         vista.btnContactoEliminar.addActionListener(listener);
-        vista.btnContactoEliminar.setActionCommand("eliminarAutor");
+        vista.btnContactoEliminar.setActionCommand("eliminarContacto");
         vista.btnCeremoniaEliminar.addActionListener(listener);
-        vista.btnCeremoniaEliminar.setActionCommand("eliminarEditorial");
+        vista.btnCeremoniaEliminar.setActionCommand("eliminarCeremonia");
+        vista.btnAdornoEliminar.addActionListener(listener);
+        vista.btnAdornoEliminar.setActionCommand("eliminarAdorno");
         vista.btnPedidoModificar.addActionListener(listener);
-        vista.btnPedidoModificar.setActionCommand("modificarLibro");
+        vista.btnPedidoModificar.setActionCommand("modificarPedido");
         vista.btnContactoModificar.addActionListener(listener);
-        vista.btnContactoModificar.setActionCommand("modificarAutor");
+        vista.btnContactoModificar.setActionCommand("modificarContacto");
         vista.btnCeremoniaModificar.addActionListener(listener);
-        vista.btnCeremoniaModificar.setActionCommand("modificarEditorial");
+        vista.btnCeremoniaModificar.setActionCommand("modificarCeremonia");
+        vista.btnAdornoModificar.addActionListener(listener);
+        vista.btnAdornoModificar.setActionCommand("modificarAdorno");
+        vista.btnPedidoLimpiar.addActionListener(listener);
+        vista.btnPedidoLimpiar.setActionCommand("limpiarPedido");
+        vista.btnContactoLimpiar.addActionListener(listener);
+        vista.btnContactoLimpiar.setActionCommand("limpiarContacto");
+        vista.btnCeremoniaLimpiar.addActionListener(listener);
+        vista.btnCeremoniaLimpiar.setActionCommand("limpiarCeremonia");
+        vista.btnAdornoLimpiar.addActionListener(listener);
+        vista.btnAdornoLimpiar.setActionCommand("limpiarAdorno");
         vista.optionDialog.btnOpcionesGuardar.addActionListener(listener);
         vista.optionDialog.btnOpcionesGuardar.setActionCommand("guardarOpciones");
         vista.itemOpciones.addActionListener(listener);
@@ -77,19 +93,25 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                         && !((ListSelectionModel) e.getSource()).isSelectionEmpty()) {
                     if (e.getSource().equals(vista.ceremoniaTabla.getSelectionModel())) {
                         int row = vista.ceremoniaTabla.getSelectedRow();
-                        vista.txtNombreEditorial.setText(String.valueOf(vista.ceremoniaTabla.getValueAt(row, 1)));
+                        vista.comboTipoCeremonia.setSelectedItem(String.valueOf(vista.ceremoniaTabla.getValueAt(row, 1)));
                         vista.txtOtroCeremonia.setText(String.valueOf(vista.ceremoniaTabla.getValueAt(row, 2)));
-                        vista.txtTelefono.setText(String.valueOf(vista.ceremoniaTabla.getValueAt(row, 3)));
-                        vista.comboTipoEditorial.setSelectedItem(String.valueOf(vista.ceremoniaTabla.getValueAt(row, 4)));
+                        vista.fechaEntrega.setDate((Date.valueOf(String.valueOf(vista.ceremoniaTabla.getValueAt(row, 3)))).toLocalDate());
+                        if ((String.valueOf(vista.ceremoniaTabla.getValueAt(row, 4))).equals("En tienda")) {
+                            vista.radioButtonTienda.isSelected();
+                        } else if ((String.valueOf(vista.ceremoniaTabla.getValueAt(row, 4))).equals("Por envio")) {
+                            vista.radioButtonEnvio.isSelected();
+                        }
                         vista.txtDireccion.setText(String.valueOf(vista.ceremoniaTabla.getValueAt(row, 5)));
                     } else if (e.getValueIsAdjusting()
                             && ((ListSelectionModel) e.getSource()).isSelectionEmpty() && !refrescar) {
                         if (e.getSource().equals(vista.ceremoniaTabla.getSelectionModel())) {
-                            borrarCamposEditoriales();
+                            borrarCamposCeremonias();
                         } else if (e.getSource().equals(vista.contactoTabla.getSelectionModel())) {
-                            borrarCamposAutores();
+                            borrarCamposContactos();
                         } else if (e.getSource().equals(vista.pedidoTabla.getSelectionModel())) {
-                            borrarCamposLibros();
+                            borrarCamposPedidos();
+                        } else if (e.getSource().equals(vista.adornoTabla.getSelectionModel())) {
+                            borrarCamposAdornos();
                         }
                     }
                 }
@@ -113,11 +135,13 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                     } else if (e.getValueIsAdjusting()
                             && ((ListSelectionModel) e.getSource()).isSelectionEmpty() && !refrescar) {
                         if (e.getSource().equals(vista.ceremoniaTabla.getSelectionModel())) {
-                            borrarCamposEditoriales();
+                            borrarCamposCeremonias();
                         } else if (e.getSource().equals(vista.contactoTabla.getSelectionModel())) {
-                            borrarCamposAutores();
+                            borrarCamposContactos();
                         } else if (e.getSource().equals(vista.pedidoTabla.getSelectionModel())) {
-                            borrarCamposLibros();
+                            borrarCamposPedidos();
+                        } else if (e.getSource().equals(vista.adornoTabla.getSelectionModel())) {
+                            borrarCamposAdornos();
                         }
                     }
                 }
@@ -134,26 +158,60 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                         && !((ListSelectionModel) e.getSource()).isSelectionEmpty()) {
                     if (e.getSource().equals(vista.pedidoTabla.getSelectionModel())) {
                         int row = vista.pedidoTabla.getSelectedRow();
-                        vista.txtNumero.setText(String.valueOf(vista.pedidoTabla.getValueAt(row, 1)));
-                        vista.comboContacto.setSelectedItem(String.valueOf(vista.pedidoTabla.getValueAt(row, 5)));
-                        vista.comboCeremonia.setSelectedItem(String.valueOf(vista.pedidoTabla.getValueAt(row, 3)));
-                        vista.comboAdorno.setSelectedItem(String.valueOf(vista.pedidoTabla.getValueAt(row, 4)));
-                        vista.fecha.setDate((Date.valueOf(String.valueOf(vista.pedidoTabla.getValueAt(row, 7)))).toLocalDate());
-                        vista.txtComentario.setText(String.valueOf(vista.pedidoTabla.getValueAt(row, 2)));
+                        vista.txtNumero.setText(String.valueOf(vista.pedidoTabla.getValueAt(row, 0)));
+                        vista.comboContacto.setSelectedItem(String.valueOf(vista.pedidoTabla.getValueAt(row, 1)));
+                        vista.comboCeremonia.setSelectedItem(String.valueOf(vista.pedidoTabla.getValueAt(row, 2)));
+                        vista.comboAdorno.setSelectedItem(String.valueOf(vista.pedidoTabla.getValueAt(row, 3)));
+                        vista.fecha.setDate((Date.valueOf(String.valueOf(vista.pedidoTabla.getValueAt(row, 4)))).toLocalDate());
+                        vista.txtComentario.setText(String.valueOf(vista.pedidoTabla.getValueAt(row, 5)));
                         vista.txtPrecio.setText(String.valueOf(vista.pedidoTabla.getValueAt(row, 6)));
                     } else if (e.getValueIsAdjusting()
                             && ((ListSelectionModel) e.getSource()).isSelectionEmpty() && !refrescar) {
                         if (e.getSource().equals(vista.ceremoniaTabla.getSelectionModel())) {
-                            borrarCamposEditoriales();
+                            borrarCamposCeremonias();
                         } else if (e.getSource().equals(vista.contactoTabla.getSelectionModel())) {
-                            borrarCamposAutores();
+                            borrarCamposContactos();
                         } else if (e.getSource().equals(vista.pedidoTabla.getSelectionModel())) {
-                            borrarCamposLibros();
+                            borrarCamposPedidos();
+                        } else if (e.getSource().equals(vista.adornoTabla.getSelectionModel())) {
+                            borrarCamposAdornos();
                         }
                     }
                 }
             }
         });
+
+        vista.adornoTabla.setCellSelectionEnabled(true);
+        ListSelectionModel cellSelectionModel4 =  vista.adornoTabla.getSelectionModel();
+        cellSelectionModel4.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        cellSelectionModel4.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()
+                        && !((ListSelectionModel) e.getSource()).isSelectionEmpty()) {
+                    if (e.getSource().equals(vista.adornoTabla.getSelectionModel())) {
+                        int row = vista.adornoTabla.getSelectedRow();
+                        vista.comboTipoAdorno.setSelectedItem(String.valueOf(vista.adornoTabla.getValueAt(row, 1)));
+                        vista.txtOtroAdorno.setText(String.valueOf(vista.adornoTabla.getValueAt(row, 2)));
+                        vista.txtTipoFlores.setText(String.valueOf(vista.adornoTabla.getValueAt(row, 3)));
+                        vista.txtOpciones.setText(String.valueOf(vista.adornoTabla.getValueAt(row, 4)));
+                        vista.txtMensaje.setText(String.valueOf(vista.adornoTabla.getValueAt(row, 5)));
+                    } else if (e.getValueIsAdjusting()
+                            && ((ListSelectionModel) e.getSource()).isSelectionEmpty() && !refrescar) {
+                        if (e.getSource().equals(vista.ceremoniaTabla.getSelectionModel())) {
+                            borrarCamposCeremonias();
+                        } else if (e.getSource().equals(vista.contactoTabla.getSelectionModel())) {
+                            borrarCamposContactos();
+                        } else if (e.getSource().equals(vista.pedidoTabla.getSelectionModel())) {
+                            borrarCamposPedidos();
+                        } else if (e.getSource().equals(vista.adornoTabla.getSelectionModel())) {
+                            borrarCamposAdornos();
+                        }
+                    }
+                }
+            }
+        });
+
     }
 
     @Override
@@ -161,10 +219,14 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
         if (!e.getValueIsAdjusting() && !((ListSelectionModel) e.getSource()).isSelectionEmpty()) {
             if (e.getSource().equals(vista.ceremoniaTabla.getSelectionModel())) {
                 int row = vista.ceremoniaTabla.getSelectedRow();
-                vista.txtNombreEditorial.setText(String.valueOf(vista.ceremoniaTabla.getValueAt(row, 1)));
+                vista.comboTipoCeremonia.setSelectedItem(String.valueOf(vista.ceremoniaTabla.getValueAt(row, 1)));
                 vista.txtOtroCeremonia.setText(String.valueOf(vista.ceremoniaTabla.getValueAt(row, 2)));
-                vista.txtTelefono.setText(String.valueOf(vista.ceremoniaTabla.getValueAt(row, 3)));
-                vista.comboTipoEditorial.setSelectedItem(String.valueOf(vista.ceremoniaTabla.getValueAt(row, 4)));
+                vista.fechaEntrega.setDate((Date.valueOf(String.valueOf(vista.ceremoniaTabla.getValueAt(row, 3)))).toLocalDate());
+                if ((String.valueOf(vista.ceremoniaTabla.getValueAt(row, 4))).equals("En tienda")) {
+                    vista.radioButtonTienda.isSelected();
+                } else if ((String.valueOf(vista.ceremoniaTabla.getValueAt(row, 4))).equals("Por envio")) {
+                    vista.radioButtonEnvio.isSelected();
+                }
                 vista.txtDireccion.setText(String.valueOf(vista.ceremoniaTabla.getValueAt(row, 5)));
             } else if (e.getSource().equals(vista.contactoTabla.getSelectionModel())) {
                 int row = vista.contactoTabla.getSelectedRow();
@@ -172,23 +234,32 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 vista.txtApellidos.setText(String.valueOf(vista.contactoTabla.getValueAt(row, 2)));
                 vista.fechaNacimiento.setDate((Date.valueOf(String.valueOf(vista.contactoTabla.getValueAt(row, 3)))).toLocalDate());
                 vista.txtPais.setText(String.valueOf(vista.contactoTabla.getValueAt(row, 4)));
+            } else if (e.getSource().equals(vista.adornoTabla.getSelectionModel())) {
+                int row = vista.adornoTabla.getSelectedRow();
+                vista.comboTipoAdorno.setSelectedItem(String.valueOf(vista.adornoTabla.getValueAt(row, 1)));
+                vista.txtOtroAdorno.setText(String.valueOf(vista.adornoTabla.getValueAt(row, 2)));
+                vista.txtTipoFlores.setText(String.valueOf(vista.adornoTabla.getValueAt(row, 3)));
+                vista.txtOpciones.setText(String.valueOf(vista.adornoTabla.getValueAt(row, 4)));
+                vista.txtMensaje.setText(String.valueOf(vista.adornoTabla.getValueAt(row, 5)));
             } else if (e.getSource().equals(vista.pedidoTabla.getSelectionModel())) {
                 int row = vista.pedidoTabla.getSelectedRow();
-                vista.txtNumero.setText(String.valueOf(vista.pedidoTabla.getValueAt(row, 1)));
-                vista.comboContacto.setSelectedItem(String.valueOf(vista.pedidoTabla.getValueAt(row, 5)));
-                vista.comboCeremonia.setSelectedItem(String.valueOf(vista.pedidoTabla.getValueAt(row, 3)));
-                vista.comboAdorno.setSelectedItem(String.valueOf(vista.pedidoTabla.getValueAt(row, 4)));
-                vista.fecha.setDate((Date.valueOf(String.valueOf(vista.pedidoTabla.getValueAt(row, 7)))).toLocalDate());
-                vista.txtComentario.setText(String.valueOf(vista.pedidoTabla.getValueAt(row, 2)));
+                vista.txtNumero.setText(String.valueOf(vista.pedidoTabla.getValueAt(row, 0)));
+                vista.comboContacto.setSelectedItem(String.valueOf(vista.pedidoTabla.getValueAt(row, 1)));
+                vista.comboCeremonia.setSelectedItem(String.valueOf(vista.pedidoTabla.getValueAt(row, 2)));
+                vista.comboAdorno.setSelectedItem(String.valueOf(vista.pedidoTabla.getValueAt(row, 3)));
+                vista.fecha.setDate((Date.valueOf(String.valueOf(vista.pedidoTabla.getValueAt(row, 4)))).toLocalDate());
+                vista.txtComentario.setText(String.valueOf(vista.pedidoTabla.getValueAt(row, 5)));
                 vista.txtPrecio.setText(String.valueOf(vista.pedidoTabla.getValueAt(row, 6)));
             } else if (e.getValueIsAdjusting()
                     && ((ListSelectionModel) e.getSource()).isSelectionEmpty() && !refrescar) {
                 if (e.getSource().equals(vista.ceremoniaTabla.getSelectionModel())) {
-                    borrarCamposEditoriales();
+                    borrarCamposCeremonias();
                 } else if (e.getSource().equals(vista.contactoTabla.getSelectionModel())) {
-                    borrarCamposAutores();
+                    borrarCamposContactos();
                 } else if (e.getSource().equals(vista.pedidoTabla.getSelectionModel())) {
-                    borrarCamposLibros();
+                    borrarCamposPedidos();
+                } else if (e.getSource().equals(vista.adornoTabla.getSelectionModel())) {
+                    borrarCamposAdornos();
                 }
             }
         }
@@ -223,151 +294,177 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 vista.dispose();
                 new Controlador(new Modelo(), new Vista());
                 break;
-            case "anadirLibro": {
+            case "anadirPedido": {
                 try {
-                    if (comprobarLibroVacio()) {
-                        Util.showErrorAlert("Rellena todos los campos");
-                        vista.pedidoTabla.clearSelection();
-                    } else if (modelo.libroIsbnYaExiste(vista.txtComentario.getText())) {
-                        Util.showErrorAlert("Ese ISBN ya existe.\nIntroduce un libro diferente");
+                    if (comprobarPedidoVacio()) {
+                        Util.showErrorAlert("Campos obligatorios: Contacto - Ceremonia - Adorno - Fecha - Precio");
                         vista.pedidoTabla.clearSelection();
                     } else {
                         modelo.insertarPedido(
-                                vista.txtNumero.getText(),
-                                vista.txtComentario.getText(),
+                                String.valueOf(vista.comboContacto.getSelectedItem()),
                                 String.valueOf(vista.comboCeremonia.getSelectedItem()),
                                 String.valueOf(vista.comboAdorno.getSelectedItem()),
-                                String.valueOf(vista.comboContacto.getSelectedItem()),
-                                Float.parseFloat(vista.txtPrecio.getText()),
-                                vista.fecha.getDate());
+                                vista.fecha.getDate(),
+                                vista.txtComentario.getText(),
+                                Float.parseFloat(vista.txtPrecio.getText()));
                     }
                 } catch (NumberFormatException nfe) {
-                    Util.showErrorAlert("Introduce números en los campos que lo requieren");
+                    Util.showErrorAlert("Introduce números en el campo Precio");
                     vista.pedidoTabla.clearSelection();
                 }
-                borrarCamposLibros();
-                refrescarLibros();
+                borrarCamposPedidos();
+                refrescarPedidos();
             }
             break;
-            case "modificarLibro": {
+            case "modificarPedido": {
                 try {
-                    if (comprobarLibroVacio()) {
-                        Util.showErrorAlert("Rellena todos los campos");
+                    if (comprobarPedidoVacio()) {
+                        Util.showErrorAlert("Campos obligatorios: Contacto - Ceremonia - Adorno - Fecha - Precio");
                         vista.pedidoTabla.clearSelection();
                     } else {
                         modelo.modificarPedido(
-                                vista.txtNumero.getText(),
-                                vista.txtComentario.getText(),
+                                String.valueOf(vista.comboContacto.getSelectedItem()),
                                 String.valueOf(vista.comboCeremonia.getSelectedItem()),
                                 String.valueOf(vista.comboAdorno.getSelectedItem()),
-                                String.valueOf(vista.comboContacto.getSelectedItem()),
-                                Float.parseFloat(vista.txtPrecio.getText()),
                                 vista.fecha.getDate(),
+                                vista.txtComentario.getText(),
+                                Float.parseFloat(vista.txtPrecio.getText()),
                                 (Integer) vista.pedidoTabla.getValueAt(vista.pedidoTabla.getSelectedRow(), 0));
                     }
                 } catch (NumberFormatException nfe) {
-                    Util.showErrorAlert("Introduce números en los campos que lo requieren");
+                    Util.showErrorAlert("Introduce números en el campo Precio");
                     vista.pedidoTabla.clearSelection();
                 }
-                borrarCamposLibros();
-                refrescarLibros();
+                borrarCamposPedidos();
+                refrescarPedidos();
             }
             break;
-            case "eliminarLibro":
-                modelo.eliminarPedido((Integer) vista.pedidoTabla.getValueAt(vista.pedidoTabla.getSelectedRow(), 0));
-                borrarCamposLibros();
-                refrescarLibros();
+            case "limpiarPedido":
+                borrarCamposPedidos();
+                refrescarPedidos();
                 break;
-            case "anadirAutor": {
+            case "eliminarPedido":
+                modelo.eliminarPedido((Integer) vista.pedidoTabla.getValueAt(vista.pedidoTabla.getSelectedRow(), 0));
+                borrarCamposPedidos();
+                refrescarPedidos();
+                break;
+            case "anadirContacto": {
                 try {
-                    if (comprobarAutorVacio()) {
-                        Util.showErrorAlert("Rellena todos los campos");
+                    if (comprobarContactoVacio()) {
+                        Util.showErrorAlert("Campos obligatorios: Nombre - Apellidos - Fecha nacimiento - Pais");
                         vista.contactoTabla.clearSelection();
                     } else if (modelo.contactoNombreYaExiste(vista.txtNombre.getText(),
                             vista.txtApellidos.getText())) {
-                        Util.showErrorAlert("Ese nombre ya existe.\nIntroduce un autor diferente");
+                        Util.showErrorAlert("Ese nombre ya existe.\nIntroduce un contacto diferente");
                         vista.contactoTabla.clearSelection();
                     } else {
-                        modelo.insertarContacto(vista.txtNombre.getText(),
+                        modelo.insertarContacto(
+                                vista.txtNombre.getText(),
                                 vista.txtApellidos.getText(),
                                 vista.fechaNacimiento.getDate(),
                                 vista.txtPais.getText());
-                        refrescarAutores();
                     }
                 } catch (NumberFormatException nfe) {
                     Util.showErrorAlert("Introduce números en los campos que lo requieren");
                     vista.contactoTabla.clearSelection();
                 }
-                borrarCamposAutores();
+                refrescarContactos();
+                borrarCamposContactos();
             }
             break;
-            case "modificarAutor": {
+            case "modificarContacto": {
                 try {
-                    if (comprobarAutorVacio()) {
-                        Util.showErrorAlert("Rellena todos los campos");
+                    if (comprobarContactoVacio()) {
+                        Util.showErrorAlert("Campos obligatorios: Nombre - Apellidos - Fecha nacimiento - Pais");
                         vista.contactoTabla.clearSelection();
                     } else {
-                        modelo.modificarAutor(vista.txtNombre.getText(), vista.txtApellidos.getText(),
-                                vista.fechaNacimiento.getDate(), vista.txtPais.getText(),
+                        modelo.modificarContacto(
+                                vista.txtNombre.getText(),
+                                vista.txtApellidos.getText(),
+                                vista.fechaNacimiento.getDate(),
+                                vista.txtPais.getText(),
                                 (Integer) vista.contactoTabla.getValueAt(vista.contactoTabla.getSelectedRow(), 0));
-                        refrescarAutores();
+                        refrescarContactos();
                     }
                 } catch (NumberFormatException nfe) {
                     Util.showErrorAlert("Introduce números en los campos que lo requieren");
                     vista.contactoTabla.clearSelection();
                 }
-                borrarCamposAutores();
+                borrarCamposContactos();
             }
             break;
-            case "eliminarAutor":
-                modelo.eliminarContacto((Integer) vista.contactoTabla.getValueAt(vista.contactoTabla.getSelectedRow(), 0));
-                borrarCamposAutores();
-                refrescarAutores();
+            case "limpiarContacto":
+                borrarCamposContactos();
+                refrescarContactos();
                 break;
-            case "anadirEditorial": {
+            case "eliminarContacto":
+                modelo.eliminarContacto((Integer) vista.contactoTabla.getValueAt(vista.contactoTabla.getSelectedRow(), 0));
+                borrarCamposContactos();
+                refrescarContactos();
+                break;
+            case "anadirCeremonia": {
+                String lugarEntrega = "";
+                if (vista.radioButtonTienda.isSelected()) {
+                    lugarEntrega = "En tienda";
+                } else if (vista.radioButtonEnvio.isSelected()) {
+                    lugarEntrega = "Por envio";
+                }
                 try {
-                    if (comprobarEditorialVacia()) {
-                        Util.showErrorAlert("Rellena todos los campos");
-                        vista.ceremoniaTabla.clearSelection();
-                    } else if (modelo.editorialNombreYaExiste(vista.txtNombreEditorial.getText())) {
-                        Util.showErrorAlert("Ese nombre ya existe.\nIntroduce una editorial diferente.");
+                    if (comprobarCeremoniaVacia()) {
+                        Util.showErrorAlert("Campos obligatorios: Tipo - Fecha entrega");
                         vista.ceremoniaTabla.clearSelection();
                     } else {
-                        modelo.insertarCeremonia(vista.txtNombreEditorial.getText(), vista.txtOtroCeremonia.getText(),
-                                vista.txtTelefono.getText(),
-                                (String) vista.comboTipoEditorial.getSelectedItem(),
+                        modelo.insertarCeremonia(
+                                (String) vista.comboTipoCeremonia.getSelectedItem(),
+                                vista.txtOtroCeremonia.getText(),
+                                vista.fechaEntrega.getDate(),
+                                lugarEntrega,
                                 vista.txtDireccion.getText());
-                        refrescarEditorial();
+                        refrescarCeremonias();
                     }
                 } catch (NumberFormatException nfe) {
                     Util.showErrorAlert("Introduce números en los campos que lo requieren");
                     vista.ceremoniaTabla.clearSelection();
                 }
-                borrarCamposEditoriales();
+                borrarCamposCeremonias();
             }
             break;
-            case "modificarEditorial": {
+            case "modificarCeremonia": {
+                String lugarEntrega = "";
+                if (vista.radioButtonTienda.isSelected()) {
+                    lugarEntrega = "En tienda";
+                } else if (vista.radioButtonEnvio.isSelected()) {
+                    lugarEntrega = "Por envio";
+                }
                 try {
-                    if (comprobarEditorialVacia()) {
-                        Util.showErrorAlert("Rellena todos los campos");
+                    if (comprobarCeremoniaVacia()) {
+                        Util.showErrorAlert("RCampos obligatorios: Tipo - Fecha entrega");
                         vista.ceremoniaTabla.clearSelection();
                     } else {
-                        modelo.modificarCeremonia(vista.txtNombreEditorial.getText(), vista.txtOtroCeremonia.getText(), vista.txtTelefono.getText(),
-                                String.valueOf(vista.comboTipoEditorial.getSelectedItem()), vista.txtDireccion.getText(),
+                        modelo.modificarCeremonia(
+                                (String) vista.comboTipoCeremonia.getSelectedItem(),
+                                vista.txtOtroCeremonia.getText(),
+                                vista.fechaEntrega.getDate(),
+                                lugarEntrega,
+                                vista.txtDireccion.getText(),
                                 (Integer) vista.ceremoniaTabla.getValueAt(vista.ceremoniaTabla.getSelectedRow(), 0));
-                        refrescarEditorial();
+                        refrescarCeremonias();
                     }
                 } catch (NumberFormatException nfe) {
                     Util.showErrorAlert("Introduce números en los campos que lo requieren");
                     vista.ceremoniaTabla.clearSelection();
                 }
-                borrarCamposEditoriales();
+                borrarCamposCeremonias();
             }
             break;
-            case "eliminarEditorial":
+            case "LimpiarCeremonia":
+                borrarCamposCeremonias();
+                refrescarCeremonias();
+                break;
+            case "eliminarCeremonia":
                 modelo.eliminarCeremonia((Integer) vista.ceremoniaTabla.getValueAt(vista.ceremoniaTabla.getSelectedRow(), 0));
-                borrarCamposEditoriales();
-                refrescarEditorial();
+                borrarCamposCeremonias();
+                refrescarCeremonias();
                 break;
         }
     }
@@ -377,20 +474,20 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
         System.exit(0);
     }
 
-    private void refrescarEditorial() {
+    private void refrescarCeremonias() {
         try {
-            vista.ceremoniaTabla.setModel(construirTableModelEditoriales(modelo.consultarCeremonia()));
+            vista.ceremoniaTabla.setModel(construirTableModelCeremonias(modelo.consultarCeremonia()));
             vista.comboCeremonia.removeAllItems();
-            for(int i = 0; i < vista.dtmEditoriales.getRowCount(); i++) {
-                vista.comboCeremonia.addItem(vista.dtmEditoriales.getValueAt(i, 0)+" - "+
-                        vista.dtmEditoriales.getValueAt(i, 1));
+            for(int i = 0; i < vista.dtmCeremonias.getRowCount(); i++) {
+                vista.comboCeremonia.addItem(vista.dtmCeremonias.getValueAt(i, 0)+" - "+
+                        vista.dtmCeremonias.getValueAt(i, 1));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private  DefaultTableModel construirTableModelEditoriales(ResultSet rs)
+    private  DefaultTableModel construirTableModelCeremonias(ResultSet rs)
             throws SQLException {
 
         ResultSetMetaData metaData = rs.getMetaData();
@@ -406,15 +503,50 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
         Vector<Vector<Object>> data = new Vector<>();
         setDataVector(rs, columnCount, data);
 
-        vista.dtmEditoriales.setDataVector(data, columnNames);
+        vista.dtmCeremonias.setDataVector(data, columnNames);
 
-        return vista.dtmEditoriales;
+        return vista.dtmCeremonias;
 
     }
 
-    private void refrescarAutores() {
+    private void refrescarAdornos() {
         try {
-            vista.contactoTabla.setModel(construirTableModeloAutores(modelo.consultarContacto()));
+            vista.adornoTabla.setModel(construirTableModelAdornos(modelo.consultarAdorno()));
+            vista.comboAdorno.removeAllItems();
+            for(int i = 0; i < vista.dtmAdornos.getRowCount(); i++) {
+                vista.comboAdorno.addItem(vista.dtmAdornos.getValueAt(i, 0)+" - "+
+                        vista.dtmAdornos.getValueAt(i, 1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private  DefaultTableModel construirTableModelAdornos(ResultSet rs)
+            throws SQLException {
+
+        ResultSetMetaData metaData = rs.getMetaData();
+
+        // names of columns
+        Vector<String> columnNames = new Vector<>();
+        int columnCount = metaData.getColumnCount();
+        for (int column = 1; column <= columnCount; column++) {
+            columnNames.add(metaData.getColumnName(column));
+        }
+
+        // data of the table
+        Vector<Vector<Object>> data = new Vector<>();
+        setDataVector(rs, columnCount, data);
+
+        vista.dtmCeremonias.setDataVector(data, columnNames);
+
+        return vista.dtmCeremonias;
+
+    }
+
+    private void refrescarContactos() {
+        try {
+            vista.contactoTabla.setModel(construirTableModeloContactos(modelo.consultarContacto()));
             vista.comboContacto.removeAllItems();
             for(int i = 0; i < vista.dtmAutores.getRowCount(); i++) {
                 vista.comboContacto.addItem(vista.dtmAutores.getValueAt(i, 0)+" - "+
@@ -425,7 +557,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
         }
     }
 
-    private DefaultTableModel construirTableModeloAutores(ResultSet rs)
+    private DefaultTableModel construirTableModeloContactos(ResultSet rs)
             throws SQLException {
 
         ResultSetMetaData metaData = rs.getMetaData();
@@ -447,15 +579,15 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
 
     }
 
-    private void refrescarLibros() {
+    private void refrescarPedidos() {
         try {
-            vista.pedidoTabla.setModel(construirTableModelLibros(modelo.consultarPedido()));
+            vista.pedidoTabla.setModel(construirTableModelPedidos(modelo.consultarPedido()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private DefaultTableModel construirTableModelLibros(ResultSet rs)
+    private DefaultTableModel construirTableModelPedidos(ResultSet rs)
             throws SQLException {
 
         ResultSetMetaData metaData = rs.getMetaData();
@@ -494,54 +626,62 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
         vista.optionDialog.pfAdmin.setText(modelo.getAdminPassword());
     }
 
-    private void borrarCamposLibros() {
-        vista.comboCeremonia.setSelectedIndex(-1);
-        vista.comboContacto.setSelectedIndex(-1);
+    private void borrarCamposPedidos() {
         vista.txtNumero.setText("");
-        vista.txtComentario.setText("");
+        vista.comboContacto.setSelectedIndex(-1);
+        vista.comboCeremonia.setSelectedIndex(-1);
         vista.comboAdorno.setSelectedIndex(-1);
-        vista.txtPrecio.setText("");
         vista.fecha.setText("");
+        vista.txtComentario.setText("");
+        vista.txtPrecio.setText("");
     }
 
-    private void borrarCamposAutores() {
+    private void borrarCamposContactos() {
         vista.txtNombre.setText("");
         vista.txtApellidos.setText("");
         vista.txtPais.setText("");
         vista.fechaNacimiento.setText("");
     }
 
-    private void borrarCamposEditoriales() {
-        vista.txtNombreEditorial.setText("");
+    private void borrarCamposCeremonias() {
+        vista.comboTipoCeremonia.setSelectedIndex(-1);
         vista.txtOtroCeremonia.setText("");
-        vista.txtTelefono.setText("");
-        vista.comboTipoEditorial.setSelectedIndex(-1);
+        vista.fechaEntrega.setText("");
         vista.txtDireccion.setText("");
     }
 
-    private boolean comprobarLibroVacio() {
-        return vista.txtNumero.getText().isEmpty() ||
-                vista.txtPrecio.getText().isEmpty() ||
-                vista.txtComentario.getText().isEmpty() ||
+    private void borrarCamposAdornos() {
+        vista.comboTipoAdorno.setSelectedIndex(-1);
+        vista.txtOtroAdorno.setText("");
+        vista.txtTipoFlores.setText("");
+        vista.txtOpciones.setText("");
+        vista.txtMensaje.setText("");
+    }
+
+    private boolean comprobarPedidoVacio() {
+        return vista.txtPrecio.getText().isEmpty() ||
                 vista.comboAdorno.getSelectedIndex() == -1 ||
                 vista.comboContacto.getSelectedIndex() == -1 ||
                 vista.comboCeremonia.getSelectedIndex() == -1 ||
                 vista.fecha.getText().isEmpty();
     }
 
-    private boolean comprobarAutorVacio() {
+    private boolean comprobarContactoVacio() {
         return vista.txtApellidos.getText().isEmpty() ||
                 vista.txtNombre.getText().isEmpty() ||
                 vista.txtPais.getText().isEmpty() ||
                 vista.fechaNacimiento.getText().isEmpty();
     }
 
-    private boolean comprobarEditorialVacia() {
-        return vista.txtNombreEditorial.getText().isEmpty() ||
-                vista.txtOtroCeremonia.getText().isEmpty() ||
-                vista.txtTelefono.getText().isEmpty() ||
-                vista.comboTipoEditorial.getSelectedIndex() == -1 ||
-                vista.txtDireccion.getText().isEmpty();
+    private boolean comprobarCeremoniaVacia() {
+        return vista.comboTipoCeremonia.getSelectedIndex() == -1 ||
+                vista.fechaEntrega.getText().isEmpty();
+    }
+
+    private boolean comprobarAdornoVacio() {
+        return vista.comboTipoAdorno.getSelectedIndex() == -1 ||
+                vista.txtTipoFlores.getText().isEmpty() ||
+                vista.txtOpciones.getText().isEmpty();
     }
 
     /*LISTENERS IPLEMENTOS NO UTILIZADOS*/
