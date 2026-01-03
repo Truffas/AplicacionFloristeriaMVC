@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="FloristeriaMVCCompleta:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/FloristeriaMVCCompleta_jar</output-path>
+    <root id="archive" name="FloristeriaMVCCompleta.jar">
+      <element id="module-output" name="FloristeriaMVCCompleta" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jgoodies-common-1.8.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jgoodies-forms-1.8.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/LGoodDatePicker-8.3.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/mysql-connector-java-5.1.44-bin.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/flatlaf-3.4.1.jar" path-in-jar="/" />
+      <element id="file-copy" path="$PROJECT_DIR$/basedatosFloristeria_java.sql" />
+      <element id="file-copy" path="$PROJECT_DIR$/config.properties" />
+    </root>
+  </artifact>
+</component>

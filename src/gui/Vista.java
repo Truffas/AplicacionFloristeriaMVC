@@ -74,20 +74,21 @@ public class Vista extends JFrame{
     JButton btnAdornoLimpiar;
     JButton btnAdornoEliminar;
     JTable adornoTabla;
+    JLabel lblImagenAdorno;
 
     //busqueda
     private JLabel etiquetaEstado;
 
-
     //default table model
     DefaultTableModel dtmCeremonias;
-    DefaultTableModel dtmAutores;
-    DefaultTableModel dtmLibros;
+    DefaultTableModel dtmContactos;
+    DefaultTableModel dtmPedidos;
     DefaultTableModel dtmAdornos;
 
     //menubar
     JMenuItem itemOpciones;
     JMenuItem itemDesconectar;
+    JMenuItem itemOscuro;
     JMenuItem itemSalir;
 
     //cuadro dialogo
@@ -107,7 +108,7 @@ public class Vista extends JFrame{
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.pack();
         //doy dimension
-        this.setSize(new Dimension(this.getWidth()+100,this.getHeight()));
+        this.setSize(new Dimension(this.getWidth()+5,this.getHeight()));
         this.setVisible(true);
         this.setLocationRelativeTo(null);
         //creo cuadro dialogo
@@ -128,10 +129,13 @@ public class Vista extends JFrame{
         itemOpciones.setActionCommand("Opciones");
         itemDesconectar = new JMenuItem("Desconectar");
         itemDesconectar.setActionCommand("Desconectar");
+        itemOscuro = new JMenuItem("Modo oscuro");
+        itemOscuro.setActionCommand("Modo oscuro");
         itemSalir=new JMenuItem("Salir");
         itemSalir.setActionCommand("Salir");
         menu.add(itemOpciones);
         menu.add(itemDesconectar);
+        menu.add(itemOscuro);
         menu.add(itemSalir);
         mbBar.add(menu);
         mbBar.add(Box.createHorizontalGlue());
@@ -167,12 +171,12 @@ public class Vista extends JFrame{
         comboTipoCeremonia.setSelectedIndex(-1);
     }
     private void setTableModels() {
-        //librosTabla, autoresTabla, editorialesTabla
-        this.dtmLibros=new DefaultTableModel();
-        this.pedidoTabla.setModel(dtmLibros);
+        //PedidosTabla, autoresTabla, editorialesTabla
+        this.dtmPedidos =new DefaultTableModel();
+        this.pedidoTabla.setModel(dtmPedidos);
 
-        this.dtmAutores=new DefaultTableModel();
-        this.contactoTabla.setModel(dtmAutores);
+        this.dtmContactos =new DefaultTableModel();
+        this.contactoTabla.setModel(dtmContactos);
 
         this.dtmCeremonias =new DefaultTableModel();
         this.ceremoniaTabla.setModel(dtmCeremonias);

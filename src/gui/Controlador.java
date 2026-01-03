@@ -1,13 +1,15 @@
 package gui;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import util.Util;
 
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.Vector;
 
 
@@ -16,6 +18,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
     private Modelo modelo;
     private Vista vista;
     boolean refrescar;
+    private boolean modoOscuro = false;
 
     public Controlador(Modelo modelo, Vista vista) {
         this.modelo = modelo;
@@ -75,6 +78,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
         vista.itemOpciones.addActionListener(listener);
         vista.itemSalir.addActionListener(listener);
         vista.itemDesconectar.addActionListener(listener);
+        vista.itemOscuro.addActionListener(listener);
         vista.btnValidate.addActionListener(listener);
     }
 
@@ -97,9 +101,9 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                         vista.txtOtroCeremonia.setText(String.valueOf(vista.ceremoniaTabla.getValueAt(row, 2)));
                         vista.fechaEntrega.setDate((Date.valueOf(String.valueOf(vista.ceremoniaTabla.getValueAt(row, 3)))).toLocalDate());
                         if ((String.valueOf(vista.ceremoniaTabla.getValueAt(row, 4))).equals("En tienda")) {
-                            vista.radioButtonTienda.isSelected();
+                            vista.radioButtonTienda.setSelected(true);
                         } else if ((String.valueOf(vista.ceremoniaTabla.getValueAt(row, 4))).equals("Por envio")) {
-                            vista.radioButtonEnvio.isSelected();
+                            vista.radioButtonEnvio.setSelected(true);
                         }
                         vista.txtDireccion.setText(String.valueOf(vista.ceremoniaTabla.getValueAt(row, 5)));
                     } else if (e.getValueIsAdjusting()
@@ -223,9 +227,9 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 vista.txtOtroCeremonia.setText(String.valueOf(vista.ceremoniaTabla.getValueAt(row, 2)));
                 vista.fechaEntrega.setDate((Date.valueOf(String.valueOf(vista.ceremoniaTabla.getValueAt(row, 3)))).toLocalDate());
                 if ((String.valueOf(vista.ceremoniaTabla.getValueAt(row, 4))).equals("En tienda")) {
-                    vista.radioButtonTienda.isSelected();
+                    vista.radioButtonTienda.setSelected(true);
                 } else if ((String.valueOf(vista.ceremoniaTabla.getValueAt(row, 4))).equals("Por envio")) {
-                    vista.radioButtonEnvio.isSelected();
+                    vista.radioButtonEnvio.setSelected(true);
                 }
                 vista.txtDireccion.setText(String.valueOf(vista.ceremoniaTabla.getValueAt(row, 5)));
             } else if (e.getSource().equals(vista.contactoTabla.getSelectionModel())) {
@@ -457,7 +461,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 borrarCamposCeremonias();
             }
             break;
-            case "LimpiarCeremonia":
+            case "limpiarCeremonia":
                 borrarCamposCeremonias();
                 refrescarCeremonias();
                 break;
@@ -465,6 +469,73 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 modelo.eliminarCeremonia((Integer) vista.ceremoniaTabla.getValueAt(vista.ceremoniaTabla.getSelectedRow(), 0));
                 borrarCamposCeremonias();
                 refrescarCeremonias();
+                break;
+
+            case "anadirAdorno": {
+                try {
+                    if (comprobarAdornoVacio()) {
+                        Util.showErrorAlert("Campos obligatorios: Tipo - Tipo flores - Opciones");
+                        vista.adornoTabla.clearSelection();
+                    } else {
+                        modelo.insertarAdorno(
+                                (String) vista.comboTipoAdorno.getSelectedItem(),
+                                vista.txtOtroAdorno.getText(),
+                                vista.txtTipoFlores.getText(),
+                                vista.txtOpciones.getText(),
+                                vista.txtMensaje.getText());
+                        refrescarAdornos();
+                    }
+                } catch (NumberFormatException nfe) {
+                    Util.showErrorAlert("Introduce números en los campos que lo requieren");
+                    vista.adornoTabla.clearSelection();
+                }
+                borrarCamposAdornos();
+            }
+            break;
+            case "modificarAdorno": {
+                try {
+                    if (comprobarAdornoVacio()) {
+                        Util.showErrorAlert("Campos obligatorios: Tipo - Tipo flores - Opciones");
+                        vista.adornoTabla.clearSelection();
+                    } else {
+                        modelo.modificarAdorno(
+                                (String) vista.comboTipoAdorno.getSelectedItem(),
+                                vista.txtOtroAdorno.getText(),
+                                vista.txtTipoFlores.getText(),
+                                vista.txtOpciones.getText(),
+                                vista.txtMensaje.getText(),
+                                (Integer) vista.adornoTabla.getValueAt(vista.adornoTabla.getSelectedRow(), 0));
+                        refrescarAdornos();
+                    }
+                } catch (NumberFormatException nfe) {
+                    Util.showErrorAlert("Introduce números en los campos que lo requieren");
+                    vista.adornoTabla.clearSelection();
+                }
+                borrarCamposAdornos();
+            }
+            break;
+            case "limpiarAdorno":
+                borrarCamposAdornos();
+                refrescarAdornos();
+                break;
+            case "eliminarAdorno":
+                modelo.eliminarAdorno((Integer) vista.adornoTabla.getValueAt(vista.adornoTabla.getSelectedRow(), 0));
+                borrarCamposAdornos();
+                refrescarAdornos();
+                break;
+
+            case "Modo oscuro":
+                try {
+                    if (!modoOscuro) {
+                        UIManager.setLookAndFeel(new com.formdev.flatlaf.FlatDarkLaf());
+                    } else {
+                        UIManager.setLookAndFeel(new com.formdev.flatlaf.FlatLightLaf());
+                    }
+                    modoOscuro = !modoOscuro;
+                    SwingUtilities.updateComponentTreeUI(vista);
+                } catch (Exception ex) {
+                    System.out.println("No se ha podido cambiar al tema oscuro.");
+                }
                 break;
         }
     }
@@ -479,8 +550,11 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
             vista.ceremoniaTabla.setModel(construirTableModelCeremonias(modelo.consultarCeremonia()));
             vista.comboCeremonia.removeAllItems();
             for(int i = 0; i < vista.dtmCeremonias.getRowCount(); i++) {
-                vista.comboCeremonia.addItem(vista.dtmCeremonias.getValueAt(i, 0)+" - "+
-                        vista.dtmCeremonias.getValueAt(i, 1));
+                vista.comboCeremonia.addItem(
+                        vista.dtmCeremonias.getValueAt(i, 0) + " - " +
+                                vista.dtmCeremonias.getValueAt(i, 1) + " " +
+                                vista.dtmCeremonias.getValueAt(i, 2)
+                );
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -496,7 +570,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
         Vector<String> columnNames = new Vector<>();
         int columnCount = metaData.getColumnCount();
         for (int column = 1; column <= columnCount; column++) {
-            columnNames.add(metaData.getColumnName(column));
+            columnNames.add(metaData.getColumnLabel(column));
         }
 
         // data of the table
@@ -514,8 +588,11 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
             vista.adornoTabla.setModel(construirTableModelAdornos(modelo.consultarAdorno()));
             vista.comboAdorno.removeAllItems();
             for(int i = 0; i < vista.dtmAdornos.getRowCount(); i++) {
-                vista.comboAdorno.addItem(vista.dtmAdornos.getValueAt(i, 0)+" - "+
-                        vista.dtmAdornos.getValueAt(i, 1));
+                vista.comboAdorno.addItem(
+                        vista.dtmAdornos.getValueAt(i, 0) + " - " +
+                                vista.dtmAdornos.getValueAt(i, 1) + " " +
+                                vista.dtmAdornos.getValueAt(i, 2)
+                );
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -531,16 +608,16 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
         Vector<String> columnNames = new Vector<>();
         int columnCount = metaData.getColumnCount();
         for (int column = 1; column <= columnCount; column++) {
-            columnNames.add(metaData.getColumnName(column));
+            columnNames.add(metaData.getColumnLabel(column));
         }
 
         // data of the table
         Vector<Vector<Object>> data = new Vector<>();
         setDataVector(rs, columnCount, data);
 
-        vista.dtmCeremonias.setDataVector(data, columnNames);
+        vista.dtmAdornos.setDataVector(data, columnNames);
 
-        return vista.dtmCeremonias;
+        return vista.dtmAdornos;
 
     }
 
@@ -548,9 +625,9 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
         try {
             vista.contactoTabla.setModel(construirTableModeloContactos(modelo.consultarContacto()));
             vista.comboContacto.removeAllItems();
-            for(int i = 0; i < vista.dtmAutores.getRowCount(); i++) {
-                vista.comboContacto.addItem(vista.dtmAutores.getValueAt(i, 0)+" - "+
-                        vista.dtmAutores.getValueAt(i, 2)+", "+vista.dtmAutores.getValueAt(i, 1));
+            for(int i = 0; i < vista.dtmContactos.getRowCount(); i++) {
+                vista.comboContacto.addItem(vista.dtmContactos.getValueAt(i, 0)+" - "+
+                        vista.dtmContactos.getValueAt(i, 2)+", "+vista.dtmContactos.getValueAt(i, 1));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -566,16 +643,16 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
         Vector<String> columnNames = new Vector<>();
         int columnCount = metaData.getColumnCount();
         for (int column = 1; column <= columnCount; column++) {
-            columnNames.add(metaData.getColumnName(column));
+            columnNames.add(metaData.getColumnLabel(column));
         }
 
         // data of the table
         Vector<Vector<Object>> data = new Vector<>();
         setDataVector(rs, columnCount, data);
 
-        vista.dtmAutores.setDataVector(data, columnNames);
+        vista.dtmContactos.setDataVector(data, columnNames);
 
-        return vista.dtmAutores;
+        return vista.dtmContactos;
 
     }
 
@@ -596,16 +673,16 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
         Vector<String> columnNames = new Vector<>();
         int columnCount = metaData.getColumnCount();
         for (int column = 1; column <= columnCount; column++) {
-            columnNames.add(metaData.getColumnName(column));
+            columnNames.add(metaData.getColumnLabel(column));
         }
 
         // data of the table
         Vector<Vector<Object>> data = new Vector<>();
         setDataVector(rs, columnCount, data);
 
-        vista.dtmLibros.setDataVector(data, columnNames);
+        vista.dtmPedidos.setDataVector(data, columnNames);
 
-        return vista.dtmLibros;
+        return vista.dtmPedidos;
 
     }
 
@@ -647,6 +724,8 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
         vista.comboTipoCeremonia.setSelectedIndex(-1);
         vista.txtOtroCeremonia.setText("");
         vista.fechaEntrega.setText("");
+        vista.radioButtonEnvio.setSelected(false);
+        vista.radioButtonTienda.setSelected(false);
         vista.txtDireccion.setText("");
     }
 
@@ -684,10 +763,56 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 vista.txtOpciones.getText().isEmpty();
     }
 
-    /*LISTENERS IPLEMENTOS NO UTILIZADOS*/
-
     private void addItemListeners(Controlador controlador) {
+        vista.comboTipoAdorno.addItemListener(controlador); //listener para las imagenes de adornos
     }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        if (e.getSource() == vista.comboTipoAdorno && e.getStateChange() == ItemEvent.SELECTED) {
+            String tipo = String.valueOf(vista.comboTipoAdorno.getSelectedItem());
+            actualizarImagenAdorno(tipo);
+        }
+    }
+
+    private void actualizarImagenAdorno(String tipo) {
+        String ruta;
+
+        switch (tipo) {
+            case "Ramo":
+                ruta = "/resources/img/ramo.png";
+                break;
+            case "Centro":
+                ruta = "/resources/img/centro.png";
+                break;
+            case "Corona":
+                ruta = "/resources/img/corona.png";
+                break;
+            default:
+                ruta = "/resources/img/default.png";
+                break;
+        }
+
+        // Cargar desde resources (funciona dentro del JAR)
+        java.net.URL url = getClass().getResource(ruta);
+
+        if (url == null) {
+            vista.lblImagenAdorno.setIcon(null);
+            return;
+        }
+
+        ImageIcon icon = new ImageIcon(url);
+
+        // (Opcional) Escalar a tamaño del label
+        Image img = icon.getImage().getScaledInstance(
+                vista.lblImagenAdorno.getWidth(),
+                vista.lblImagenAdorno.getHeight(),
+                Image.SCALE_SMOOTH
+        );
+
+        vista.lblImagenAdorno.setIcon(new ImageIcon(img));
+    }
+
 
     @Override
     public void windowOpened(WindowEvent e) {
@@ -713,8 +838,5 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
     public void windowDeactivated(WindowEvent e) {
     }
 
-    @Override
-    public void itemStateChanged(ItemEvent e) {
 
-    }
 }

@@ -36,7 +36,7 @@ precio float not null);
 --
 alter table pedidos
 add foreign key (idcontacto) references contactos(idcontacto),
-add foreign key (idceremonia) references ceremonias(idceremonia);
+add foreign key (idceremonia) references ceremonias(idceremonia),
 add foreign key (idadorno) references adornos(idadorno);
 --
 delimiter ||

@@ -416,12 +416,11 @@ public class Modelo {
     }
     ResultSet consultarPedido() throws SQLException {
         String sentenciaSql = "SELECT p.idpedido as 'ID', " +
-                "p.idpedido as 'Numero', " +
                 "concat(c.idcontacto, ' - ', c.apellidos, ', ', c.nombre) as 'Contacto', " +
                 "concat(e.idceremonia, ' - ', e.tipoceremonia, ' ', e.otroceremonia) as 'Ceremonia', " +
                 "concat(a.idadorno, ' - ', a.tipoadorno, ' ', a.otroadorno) as 'Adorno', " +
                 "p.fecha as 'Fecha de pedido', " +
-                "p.comentario as 'comentario', " +
+                "p.comentario as 'Comentario', " +
                 "p.precio as 'Precio' " +
                 "FROM pedidos as p " +
                 "inner join contactos as c " +
