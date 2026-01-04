@@ -764,11 +764,15 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
     }
 
     private void addItemListeners(Controlador controlador) {
-        vista.comboTipoAdorno.addItemListener(controlador); //listener para las imagenes de adornos
+        //vincula el controlador como listener del combo.
+        //cada vez que el usuario cambie el tipo de adorno, se disparará itemStateChanged()
+        vista.comboTipoAdorno.addItemListener(controlador);
     }
 
     @Override
     public void itemStateChanged(ItemEvent e) {
+        //filtramos solo nos interesa el combo de tipo de adorno
+        //y solo cuando se produce una selección (no cuando se "deselecciona" el anterior)
         if (e.getSource() == vista.comboTipoAdorno && e.getStateChange() == ItemEvent.SELECTED) {
             String tipo = String.valueOf(vista.comboTipoAdorno.getSelectedItem());
             actualizarImagenAdorno(tipo);
@@ -793,24 +797,13 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 break;
         }
 
-        // Cargar desde resources (funciona dentro del JAR)
+        // Carga el recurso desde el classpath para que funcione tanto en IntelliJ como el JAR
         java.net.URL url = getClass().getResource(ruta);
-
         if (url == null) {
             vista.lblImagenAdorno.setIcon(null);
             return;
         }
-
-        ImageIcon icon = new ImageIcon(url);
-
-        // (Opcional) Escalar a tamaño del label
-        Image img = icon.getImage().getScaledInstance(
-                vista.lblImagenAdorno.getWidth(),
-                vista.lblImagenAdorno.getHeight(),
-                Image.SCALE_SMOOTH
-        );
-
-        vista.lblImagenAdorno.setIcon(new ImageIcon(img));
+        vista.lblImagenAdorno.setIcon(new ImageIcon(url));
     }
 
 

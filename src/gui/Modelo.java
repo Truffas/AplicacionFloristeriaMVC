@@ -1,5 +1,7 @@
 package gui;
 
+import util.Util;
+
 import java.io.*;
 import java.sql.*;
 import java.time.LocalDate;
@@ -300,7 +302,11 @@ public class Modelo {
             sentencia.setInt(1, idceremonia);
             sentencia.executeUpdate();
         } catch (SQLException sqle) {
-            sqle.printStackTrace();
+            if (sqle.getErrorCode() == 1451) { //Es el número de error que lanza MYSQL si intentas borrar una fila padre referenciada en otra tabla
+                Util.showErrorAlert("No puedes eliminar esta ceremonia porque hay pedidos asociados.\nElimina antes esos pedidos.");
+            } else {
+                sqle.printStackTrace();
+            }
         } finally {
             if (sentencia != null)
                 try {
@@ -320,7 +326,11 @@ public class Modelo {
             sentencia.setInt(1, idadorno);
             sentencia.executeUpdate();
         } catch (SQLException sqle) {
-            sqle.printStackTrace();
+            if (sqle.getErrorCode() == 1451) { //Es el número de error que lanza MYSQL si intentas borrar una fila padre referenciada en otra tabla
+                Util.showErrorAlert("No puedes eliminar este adorno porque hay pedidos asociados.\nElimina antes esos pedidos.");
+            } else {
+                sqle.printStackTrace();
+            }
         } finally {
             if (sentencia != null)
                 try {
@@ -341,7 +351,11 @@ public class Modelo {
             sentencia.setInt(1, idcontacto);
             sentencia.executeUpdate();
         } catch (SQLException sqle) {
-            sqle.printStackTrace();
+            if (sqle.getErrorCode() == 1451) { //Es el número de error que lanza MYSQL si intentas borrar una fila padre referenciada en otra tabla
+                Util.showErrorAlert("No puedes eliminar este contacto porque hay pedidos asociados.\nElimina antes esos pedidos.");
+            } else {
+                sqle.printStackTrace();
+            }
         } finally {
             if (sentencia != null)
                 try {
