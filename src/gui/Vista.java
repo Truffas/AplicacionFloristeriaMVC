@@ -58,6 +58,7 @@ public class Vista extends JFrame{
     JRadioButton radioButtonEnvio;
     JLabel lblTipoCeremonia;
     JLabel lblOtroCeremonia;
+    JLabel lblDireccion;
 
     //adornos
     JPanel JPanelAdorno;
@@ -106,6 +107,7 @@ public class Vista extends JFrame{
         this.setContentPane(panel1);
         //al clickar en cerrar no hace nada
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setIconImage(new ImageIcon(getClass().getResource("/flor.png")).getImage()); // Cargo la imagen desde los recursos del proyecto
         this.pack();
         //doy dimension
         this.setSize(new Dimension(this.getWidth()+5,this.getHeight()));

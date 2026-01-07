@@ -73,12 +73,15 @@ public class Modelo {
 
     void desconectar() {
         try {
-            conexion.close();
-            conexion = null;
+            if (conexion != null) {
+                conexion.close();
+                conexion = null;
+            }
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
     }
+
 
     void insertarContacto(String nombre, String apellidos, LocalDate fechaNacimiento, String pais) {
         String sentenciaSql = "INSERT INTO contactos (nombre, apellidos, fechanacimiento, pais) VALUES (?, ?, ?, ?)";

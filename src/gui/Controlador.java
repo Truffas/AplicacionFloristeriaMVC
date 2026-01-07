@@ -19,6 +19,8 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
     private Vista vista;
     boolean refrescar;
     private boolean modoOscuro = false;
+    private boolean conectado = true;
+
 
     public Controlador(Modelo modelo, Vista vista) {
         this.modelo = modelo;
@@ -73,6 +75,10 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
         vista.btnCeremoniaLimpiar.setActionCommand("limpiarCeremonia");
         vista.btnAdornoLimpiar.addActionListener(listener);
         vista.btnAdornoLimpiar.setActionCommand("limpiarAdorno");
+        vista.radioButtonTienda.addActionListener(listener);
+        vista.radioButtonTienda.setActionCommand("En tienda");
+        vista.radioButtonEnvio.addActionListener(listener);
+        vista.radioButtonEnvio.setActionCommand("Por envio");
         vista.optionDialog.btnOpcionesGuardar.addActionListener(listener);
         vista.optionDialog.btnOpcionesGuardar.setActionCommand("guardarOpciones");
         vista.itemOpciones.addActionListener(listener);
@@ -278,6 +284,24 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 break;
             case "Desconectar":
                 modelo.desconectar();
+                conectado = false;
+
+                JOptionPane.showMessageDialog(vista, "¡Te has desconectado!");
+                setModoDesconectado(true);
+
+                vista.itemDesconectar.setText("Conectar");
+                vista.itemDesconectar.setActionCommand("Conectar");
+                break;
+            case "Conectar":
+                modelo.conectar();
+                conectado = true;
+
+                JOptionPane.showMessageDialog(vista, "¡Conexión establecida!");
+                setModoDesconectado(false);
+                refrescarTodo();
+
+                vista.itemDesconectar.setText("Desconectar");
+                vista.itemDesconectar.setActionCommand("Desconectar");
                 break;
             case "Salir":
                 System.exit(0);
@@ -470,7 +494,15 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 borrarCamposCeremonias();
                 refrescarCeremonias();
                 break;
-
+            case "En tienda":
+                vista.txtDireccion.setText(null);
+                vista.lblDireccion.setVisible(false);
+                vista.txtDireccion.setVisible(false);
+                break;
+            case "Por envio":
+                vista.lblDireccion.setVisible(true);
+                vista.txtDireccion.setVisible(true);
+                break;
             case "anadirAdorno": {
                 try {
                     if (comprobarAdornoVacio()) {
@@ -797,14 +829,74 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 break;
         }
 
-        // Carga el recurso desde el classpath para que funcione tanto en IntelliJ como el JAR
+        //carga el recurso desde el classpath para que funcione tanto en IntelliJ como el JAR
         java.net.URL url = getClass().getResource(ruta);
         if (url == null) {
             vista.lblImagenAdorno.setIcon(null);
             return;
         }
-        vista.lblImagenAdorno.setIcon(new ImageIcon(url));
+        //escalar la imagen al tamaño del JLabel
+        ImageIcon icon = new ImageIcon(url);
+
+        int w = vista.lblImagenAdorno.getWidth();
+        int h = vista.lblImagenAdorno.getHeight();
+
+        Image imgEscalada = icon.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
+        vista.lblImagenAdorno.setIcon(new ImageIcon(imgEscalada));
     }
+
+    private void setModoDesconectado(boolean desconectado) {
+
+        //PEDIDOS
+        vista.btnPedidoAnadir.setEnabled(!desconectado);
+        vista.btnPedidoModificar.setEnabled(!desconectado);
+        vista.btnPedidoEliminar.setEnabled(!desconectado);
+        vista.btnPedidoLimpiar.setEnabled(!desconectado);
+        vista.pedidoTabla.setEnabled(!desconectado);
+        vista.comboContacto.setEnabled(!desconectado);
+        vista.comboCeremonia.setEnabled(!desconectado);
+        vista.comboAdorno.setEnabled(!desconectado);
+        vista.fecha.setEnabled(!desconectado);
+        vista.txtComentario.setEnabled(!desconectado);
+        vista.txtPrecio.setEnabled(!desconectado);
+
+        //CONTACTOS
+        vista.btnContactoAnadir.setEnabled(!desconectado);
+        vista.btnContactoModificar.setEnabled(!desconectado);
+        vista.btnContactoEliminar.setEnabled(!desconectado);
+        vista.btnContactoLimpiar.setEnabled(!desconectado);
+        vista.contactoTabla.setEnabled(!desconectado);
+        vista.txtNombre.setEnabled(!desconectado);
+        vista.txtApellidos.setEnabled(!desconectado);
+        vista.fechaNacimiento.setEnabled(!desconectado);
+        vista.txtPais.setEnabled(!desconectado);
+
+        //CEREMONIAS
+        vista.btnCeremoniaAnadir.setEnabled(!desconectado);
+        vista.btnCeremoniaModificar.setEnabled(!desconectado);
+        vista.btnCeremoniaEliminar.setEnabled(!desconectado);
+        vista.btnCeremoniaLimpiar.setEnabled(!desconectado);
+        vista.ceremoniaTabla.setEnabled(!desconectado);
+        vista.comboTipoCeremonia.setEnabled(!desconectado);
+        vista.txtOtroCeremonia.setEnabled(!desconectado);
+        vista.fechaEntrega.setEnabled(!desconectado);
+        vista.radioButtonTienda.setEnabled(!desconectado);
+        vista.radioButtonEnvio.setEnabled(!desconectado);
+        vista.txtDireccion.setEnabled(!desconectado);
+
+        //ADORNOS
+        vista.btnAdornoAnadir.setEnabled(!desconectado);
+        vista.btnAdornoModificar.setEnabled(!desconectado);
+        vista.btnAdornoEliminar.setEnabled(!desconectado);
+        vista.btnAdornoLimpiar.setEnabled(!desconectado);
+        vista.adornoTabla.setEnabled(!desconectado);
+        vista.comboTipoAdorno.setEnabled(!desconectado);
+        vista.txtOtroAdorno.setEnabled(!desconectado);
+        vista.txtTipoFlores.setEnabled(!desconectado);
+        vista.txtOpciones.setEnabled(!desconectado);
+        vista.txtMensaje.setEnabled(!desconectado);
+    }
+
 
 
     @Override
